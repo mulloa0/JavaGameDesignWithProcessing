@@ -8,8 +8,8 @@ Grid grid = new Grid(6,8);
 PImage bg;
 PImage player1;
 PImage endScreen;
-String titleText = "NameOfYourGame";
-String extraText = "Who's Turn?";
+String titleText = "Murder Mystery";
+String extraText = "Mansion Conspiracy";
 AnimatedSprite exampleSprite;
 boolean doAnimation;
 
