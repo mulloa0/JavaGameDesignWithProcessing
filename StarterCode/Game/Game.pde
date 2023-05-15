@@ -9,7 +9,7 @@ PImage bg;
 PImage player1;
 PImage endScreen;
 String titleText = "Murder Mystery";
-String extraText = "Mansion Conspiracy";
+String extraText = "Mansion Conspiracy -Maria & Sadia";
 AnimatedSprite exampleSprite;
 boolean doAnimation;
 
