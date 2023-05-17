@@ -18,7 +18,7 @@ boolean doAnimation;
 //SoundFile song;
 
 int player1Row = 3;
-
+int player1Col=0;
 
 //Required Processing method that gets run once
 void setup() {
@@ -31,10 +31,10 @@ void setup() {
 
   //Load images used
   //bg = loadImage("images/chess.jpg");
-  bg = loadImage("images/x_wood.png");
+  bg = loadImage("images/mansion.jpg");
   bg.resize(800,600);
-  player1 = loadImage("images/x_wood.png");
-  player1.resize(grid.getTileWidthPixels(),grid.getTileHeightPixels());
+  player1 = loadImage("images/mchar-transformed.png");
+  player1.resize(100,100);
   endScreen = loadImage("images/youwin.png");
 
   // Load a soundfile from the /data folder of the sketch and play it back
@@ -134,7 +134,7 @@ public void updateScreen(){
   background(bg);
 
   //Display the Player1 image
-  GridLocation player1Loc = new GridLocation(player1Row,0);
+  GridLocation player1Loc = new GridLocation(player1Row,player1Col);
   grid.setTileImage(player1Loc, player1);
   
   //update other screen elements
