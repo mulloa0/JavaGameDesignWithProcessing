@@ -76,14 +76,53 @@ void keyPressed(){
   //What to do when a key is pressed?
   
   //set "w" key to move the player1 up
-  if(keyCode == 87){
+  if(player1Row>0 && keyCode == 87){
     //check case where out of bounds
     
     //change the field for player1Row
     player1Row--;
 
     //shift the player1 picture up in the 2D array
-    GridLocation loc = new GridLocation(player1Row, 0);
+    GridLocation loc = new GridLocation(player1Row, player1Col);
+    grid.setTileImage(loc, player1);
+
+    //eliminate the picture from the old location
+
+  }
+if(player1Row>0 && keyCode == 83){
+    //check case where out of bounds (key s)
+    
+    //change the field for player1Row
+    player1Row++;
+
+    //shift the player1 picture up in the 2D array
+    GridLocation loc = new GridLocation(player1Row, player1Col);
+    grid.setTileImage(loc, player1);
+
+    //eliminate the picture from the old location
+
+  }
+if(player1Col>0 && keyCode == 68){
+    //check case where out of bounds (key d)
+    
+    //change the field for player1Row
+    player1Col++;
+
+    //shift the player1 picture up in the 2D array
+    GridLocation loc = new GridLocation(player1Row, player1Col);
+    grid.setTileImage(loc, player1);
+
+    //eliminate the picture from the old location
+
+  }
+  if(player1Col>0 && keyCode == 65){
+    //check case where out of bounds (key a)
+    
+    //change the field for player1Row
+    player1Col--;
+
+    //shift the player1 picture up in the 2D array
+    GridLocation loc = new GridLocation(player1Row, player1Col);
     grid.setTileImage(loc, player1);
 
     //eliminate the picture from the old location
@@ -99,7 +138,11 @@ void keyPressed(){
     System.out.println("Grid location: " + grid.getGridLocation());
 
     //what to do if clicked? (Make player1 disappear?)
-
+    GridLocation clickedLoc= grid.getGridLocation();
+    GridLocation player1loc= new GridLocation(player1Row,player1Col);
+    if(clickedLoc.equals(player1loc)){
+      player1Col--;
+    }
 
     //Toggle the animation on & off
     doAnimation = !doAnimation;
