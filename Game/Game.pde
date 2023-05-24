@@ -76,7 +76,7 @@ void keyPressed(){
   //What to do when a key is pressed?
   
   //set "w" key to move the player1 up
-  if(player1Row>0 && keyCode == 87){
+  if(player1Row !=0 && keyCode == 87){
     //check case where out of bounds
     
     //change the field for player1Row
@@ -89,7 +89,7 @@ void keyPressed(){
     //eliminate the picture from the old location
 
   }
-if(player1Row>0 && keyCode == 83){
+if(player1Row !=0 && keyCode == 83){
     //check case where out of bounds (key s)
     
     //change the field for player1Row
@@ -102,31 +102,23 @@ if(player1Row>0 && keyCode == 83){
     //eliminate the picture from the old location
 
   }
-if(player1Col>0 && keyCode == 68){
-    //check case where out of bounds (key d)
-    
-    //change the field for player1Row
+ if(player1Col !=  grid.getNumCols()-1 && keyCode == 68){
+
+    //Erase image from previous location
+    GridLocation oldLoc = new GridLocation(player1Row, player1Col);
+    grid.clearTileImage(oldLoc);
+
+    //change the field for player1Col
     player1Col++;
-
-    //shift the player1 picture up in the 2D array
-    GridLocation loc = new GridLocation(player1Row, player1Col);
-    grid.setTileImage(loc, player1);
-
-    //eliminate the picture from the old location
-
   }
-  if(player1Col>0 && keyCode == 65){
-    //check case where out of bounds (key a)
-    
-    //change the field for player1Row
+  if(player1Col !=  grid.getNumCols()-1 && keyCode == 65){
+
+    //Erase image from previous location
+    GridLocation oldLoc = new GridLocation(player1Row, player1Col);
+    grid.clearTileImage(oldLoc);
+
+    //change the field for player1Col
     player1Col--;
-
-    //shift the player1 picture up in the 2D array
-    GridLocation loc = new GridLocation(player1Row, player1Col);
-    grid.setTileImage(loc, player1);
-
-    //eliminate the picture from the old location
-
   }
 }
 
@@ -203,7 +195,7 @@ public void handleCollisions(){
 }
 
 //method to indicate when the main game is over
-public boolean isGameOver(){
+public boolean isGameOver(){ 
   return false; //by default, the game is never over
 }
 
