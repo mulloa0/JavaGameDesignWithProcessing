@@ -55,10 +55,10 @@ public void setup() {
 
   //Load images used
   //bg = loadImage("images/chess.jpg");
-  bg = loadImage("images/mansion.jpg");
+  bg = loadImage("images/x_wood.png");
   bg.resize(800,600);
-  player1 = loadImage("images/mchar-transformed.png");
-  player1.resize(100,100);
+  player1 = loadImage("images/x_wood.png");
+  player1.resize(grid.getTileWidthPixels(),grid.getTileHeightPixels());
   endScreen = loadImage("images/youwin.png");
 
   // Load a soundfile from the /data folder of the sketch and play it back
