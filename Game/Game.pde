@@ -98,7 +98,7 @@ void keyPressed(){
     player1Row--;
 
   }
-if(player1Row !=0 && keyCode == 83){
+if(player1Row != -1 && keyCode == 83){
     //check case where out of bounds (key s)
     
     //Erase image from previous location
