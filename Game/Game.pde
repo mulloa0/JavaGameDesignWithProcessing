@@ -5,7 +5,8 @@
 
 //GAME VARIABLES
 private int msElapsed = 0;
-Grid grid = new Grid(6,8);
+Grid grid = new Grid(5,15);
+//HexGrid hGrid = new HexGrid(3);
 PImage bg;
 PImage player1;
 PImage player2;
