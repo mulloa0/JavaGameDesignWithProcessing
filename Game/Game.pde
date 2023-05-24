@@ -187,7 +187,8 @@ public void updateScreen(){
 
 
   //Update other screen elements
-
+  grid.showImages();
+  grid.showSprites();
 
 }
 
@@ -195,44 +196,66 @@ public void updateScreen(){
 public void populateSprites(){
 
   //What is the index for the last column?
-  
+  int lastCol = grid.getNumCols()-1;
 
   //Loop through all the rows in the last column
-  
-    //Generate a random number
-    
+  for(int r=0; r<grid.getNumRows(); r++){
 
-    //10% of the time, decide to add an enemy image to a Tile
+    //Generate a random number
+    double rando = Math.random();
+
+    //10% of the time, decide to add an image to a Tile
+    if(rando < 0.1){
+      //grid.setTileImage(new GridLocation(r,lastCol), enemy);
+      //System.out.println("Populating in row " + r);
+      grid.setTileSprite(new GridLocation(r, lastCol), enemySprite);
+    }
+
+  }
+
 
 }
 
 //Method to move around the enemies/sprites on the screen
 public void moveSprites(){
 
-  //Loop through all of the rows & cols in the grid
-  
-    //Store the 2 tile locations to move
+  //Loop through all of the cells in the grid
+  for (int r = 0; r < grid.getNumRows(); r++) {
+    for (int c = 1; c < grid.getNumCols(); c++) {
 
-    //Check if the current tile has an image that is not player1      
-
-
-      //Get image/sprite from current location
-
-
-      //CASE 1: Collision with player1
-
-
-      //CASE 2: Move enemy over to new location
-
+      //Store the 2 locations to move
+      GridLocation loc = new GridLocation(r, c);
+      GridLocation newLoc = new GridLocation(r, c - 1);
       
-      //Erase image/sprite from old location
-      
-      //System.out.println(loc + " " + grid.hasTileImage(loc));
+      // Check if the current tile has an image and is NOT the player1
+      // if(grid.hasTileImage(loc) && !grid.getTileImage(loc).equals(player1) ){
+      if(grid.hasTileSprite(loc) ){
+        //System.out.println("Moving sprite found at loc " + loc);
 
+        //Get image from current location
+        //PImage img = grid.getTileImage(loc);
+        AnimatedSprite sprite = grid.getTileSprite(loc);
 
-    //CASE 3: Enemy leaves screen at first column
+        //Set image to new Location 
+        //grid.setTileImage(newLoc, img);
+        //System.out.println("Moving to newLoc" + newLoc);
+        grid.setTileSprite(newLoc, sprite);
 
+        //Erase image from old location
+        //grid.clearTileImage(loc);
+        grid.clearTileSprite(loc);
 
+        //System.out.println(loc + " " + grid.hasTileImage(loc));
+      }
+
+      //What is at the first column?
+      if (c == 1) {
+        grid.clearTileImage(newLoc);
+        grid.clearTileSprite(newLoc);
+      }
+
+    }
+  }
 }
 
 //Method to handle the collisions between Sprites on the Screen
