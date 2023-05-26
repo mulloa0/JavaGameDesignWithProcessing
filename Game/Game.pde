@@ -263,6 +263,12 @@ public void moveSprites(){
 }
 
 //Method to handle the collisions between Sprites on the Screen
+
+//it checks collisions
+public void checkCollision(){
+
+}
+
 public void handleCollisions(){
 
 
