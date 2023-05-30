@@ -11,6 +11,7 @@ PImage bg;
 PImage player1;
 PImage player2;
 PImage enemy;
+ArrayList<String> item = new ArrayList<String>();
 AnimatedSprite enemySprite;
 PImage endScreen;
 String titleText = "Murder Mystery";
