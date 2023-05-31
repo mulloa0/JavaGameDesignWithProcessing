@@ -272,12 +272,12 @@ public void moveSprites(){
 //Method to handle the collisions between Sprites on the Screen
 
 //it checks collisions - requires two parameters
-public void checkCollision(){
+public void checkCollision(GridLocation current, GridLocation newLoc){
 for(int r = 0; r < grid.getNumRows(); r++){
-  for(int c = 1; c <grid.getNumCols(); c++){
+  for(int c = 1; c < grid.getNumCols(); c++){
 
-    GridLocation current = new GridLocation(r,c);
-    GridLocation newLoc = new GridLocation(r, c-1);
+    current = new GridLocation(r,c);
+    newLoc = new GridLocation(r, c-1);
 
     if(grid.hasTileImage(current)){
       //collision occurs
