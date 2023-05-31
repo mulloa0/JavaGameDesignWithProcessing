@@ -13,6 +13,7 @@ PImage bg;
 PImage player1;
 PImage player2;
 PImage enemy;
+PImage key; 
 ArrayList<String> item = new ArrayList<String>();
 AnimatedSprite enemySprite;
 PImage endScreen;
@@ -26,9 +27,10 @@ boolean doAnimation;
 //SoundFile song;
 
 int player1Row = 3;
-int player1Col=0;
+int player1Col = 0;
 
-//items stay still until they are collected
+int keyRow = 1;
+int keyCol = 1;
 
 
 //Required Processing method that gets run once
@@ -46,12 +48,17 @@ void setup() {
   bg.resize(800,600);
   player1 = loadImage("images/mchar-transformed.png");
   player1.resize(100,100);
+  key = loadImage("images/key.png");
+  key.resize(50,50);
   endScreen = loadImage("images/youwin.png");
 
   // Load a soundfile from the /data folder of the sketch and play it back
   // song = new SoundFile(this, "sounds/Lenny_Kravitz_Fly_Away.mp3");
   // song.play();
 
+  //set up the images
+  //set marks
+  //loop through to find marks
   
   //Animation & Sprite setup
   exampleAnimationSetup();
@@ -64,7 +71,7 @@ void setup() {
 
 //Required Processing method that automatically loops
 //(Anything drawn on the screen should be called from here)
-void draw() {
+void draw() { 
 
   updateTitleBar();
 
@@ -94,16 +101,19 @@ void keyPressed(){
 
   //What to do when a key is pressed?
   //check collisions
-  
+
   //set "w" key to move the player1 up
   if(player1Row !=0 && keyCode == 87){
-
+    
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
+    
     grid.clearTileImage(oldLoc);
 
     //change the field for player1Row
     player1Row--;
+
+    
 
   }
 if(player1Row !=-1 && keyCode == 83){
@@ -151,6 +161,13 @@ if(player1Row !=-1 && keyCode == 83){
       player1Col--;
     }
 
+
+    //is an object nearby
+    //loop thru the 3x3 grid surrouding player
+
+
+
+
     //Toggle the animation on & off
     doAnimation = !doAnimation;
     System.out.println("doAnimation: " + doAnimation);
@@ -186,6 +203,10 @@ public void updateScreen(){
   //Display the Player1 image
   GridLocation player1Loc = new GridLocation(player1Row,player1Col);
   grid.setTileImage(player1Loc, player1);
+
+  //Display key
+  GridLocation keyloc = new GridLocation(keyRow, keyCol);
+  grid.setTileImage(keyloc, key);
   
   //Loop through all the Tiles and display its images/sprites
   
@@ -272,21 +293,33 @@ public void moveSprites(){
 //Method to handle the collisions between Sprites on the Screen
 
 //it checks collisions - requires two parameters
-public void checkCollision(GridLocation current, GridLocation newLoc){
-for(int r = 0; r < grid.getNumRows(); r++){
-  for(int c = 1; c < grid.getNumCols(); c++){
+public boolean checkCollision(GridLocation current, GridLocation newLoc){
+  
 
-    current = new GridLocation(r,c);
-    newLoc = new GridLocation(r, c-1);
+//get image at current location first, if any
+PImage image = grid.getTileImage(current);
 
-    if(grid.hasTileImage(current)){
-      //collision occurs
-      timesGet++;
-      //clear image at original loc
-      grid.clearTileImage(current);
-    }
-  }
+//if nothing is there, there can't be a collision
+if(image == null){
+  return false;
 }
+
+//get image at new location, if any
+PImage newImage = grid.getTileImage(newLoc);
+Sprite sprite = grid.getTileSprite(newLoc);
+
+//if nothing is at new location, there can't be a collision 
+if(newImage == null){
+  return false;
+}
+
+//check if player interacts with item or npc
+if(player1.equals(image) && key.equals(newImage)){
+  grid.clearTileImage(current);
+}
+
+return true;
+
 
 }
 
