@@ -5,6 +5,8 @@
 
 //GAME VARIABLES
 private int msElapsed = 0;
+private int timesGet = 0;
+//Grid grid = new Grid(5,15);
 Grid grid = new Grid(20,20);
 //HexGrid hGrid = new HexGrid(3);
 PImage bg;
@@ -25,6 +27,9 @@ boolean doAnimation;
 
 int player1Row = 3;
 int player1Col=0;
+
+//items stay still until they are collected
+
 
 //Required Processing method that gets run once
 void setup() {
@@ -88,6 +93,7 @@ void keyPressed(){
   System.out.println("Key pressed: " + keyCode); //keyCode gives you an integer for the key
 
   //What to do when a key is pressed?
+  //check collisions
   
   //set "w" key to move the player1 up
   if(player1Row !=0 && keyCode == 87){
@@ -265,8 +271,22 @@ public void moveSprites(){
 
 //Method to handle the collisions between Sprites on the Screen
 
-//it checks collisions
+//it checks collisions - requires two parameters
 public void checkCollision(){
+for(int r = 0; r < grid.getNumRows(); r++){
+  for(int c = 1; c <grid.getNumCols(); c++){
+
+    GridLocation current = new GridLocation(r,c);
+    GridLocation newLoc = new GridLocation(r, c-1);
+
+    if(grid.hasTileImage(current)){
+      //collision occurs
+      timesGet++;
+      //clear image at original loc
+      grid.clearTileImage(current);
+    }
+  }
+}
 
 }
 
