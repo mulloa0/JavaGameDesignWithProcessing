@@ -5,9 +5,19 @@
 
 //GAME VARIABLES
 private int msElapsed = 0;
-Grid grid = new Grid(6,8);
+<<<<<<< HEAD
+private int timesGet = 0;
+Grid grid = new Grid(5,15);
+=======
+Grid grid = new Grid(20,20);
+>>>>>>> bbe23a4c2177e0765444b5dfeaac2b8d441eb12c
+//HexGrid hGrid = new HexGrid(3);
 PImage bg;
 PImage player1;
+PImage player2;
+PImage enemy;
+ArrayList<String> item = new ArrayList<String>();
+AnimatedSprite enemySprite;
 PImage endScreen;
 String titleText = "Murder Mystery";
 String extraText = "Mansion Conspiracy -Maria & Sadia";
@@ -20,6 +30,9 @@ boolean doAnimation;
 
 int player1Row = 3;
 int player1Col=0;
+
+//items stay still until they are collected
+
 
 //Required Processing method that gets run once
 void setup() {
@@ -83,9 +96,10 @@ void keyPressed(){
   System.out.println("Key pressed: " + keyCode); //keyCode gives you an integer for the key
 
   //What to do when a key is pressed?
+  //check collisions
   
-  //set [w] key to move the player1 up
-  if(player1Row>0 && keyCode == 87){
+  //set "w" key to move the player1 up
+  if(player1Row !=0 && keyCode == 87){
 
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
@@ -95,9 +109,8 @@ void keyPressed(){
     player1Row--;
 
   }
-  
-  //set [s] key to move the player1 down
-  if(player1Row>0 && keyCode == 83){
+if(player1Row !=-1 && keyCode == 83){
+    //check case where out of bounds (key s)
     
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
@@ -107,21 +120,16 @@ void keyPressed(){
     player1Row++;
 
   }
+ if(player1Col !=  grid.getNumCols()-1 && keyCode == 68){
 
-  //set [d] key to move the player1 right
-  if(player1Col>0 && keyCode == 68){
-    
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
     grid.clearTileImage(oldLoc);
 
     //change the field for player1Col
     player1Col++;
-
   }
-
-  //set [a] key to move the player1 left
-  if(player1Col>0 && keyCode == 65){
+  if(player1Col !=  grid.getNumCols()-1 && keyCode == 65){
 
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
@@ -129,7 +137,6 @@ void keyPressed(){
 
     //change the field for player1Col
     player1Col--;
-
   }
 }
 
@@ -194,7 +201,8 @@ public void updateScreen(){
 
 
   //Update other screen elements
-
+  grid.showImages();
+  grid.showSprites();
 
 }
 
@@ -202,54 +210,96 @@ public void updateScreen(){
 public void populateSprites(){
 
   //What is the index for the last column?
-  
+  int lastCol = grid.getNumCols()-1;
 
   //Loop through all the rows in the last column
-  
-    //Generate a random number
-    
+  for(int r=0; r<grid.getNumRows(); r++){
 
-    //10% of the time, decide to add an enemy image to a Tile
+    //Generate a random number
+    double rando = Math.random();
+
+    //10% of the time, decide to add an image to a Tile
+    if(rando < 0.1){
+      //grid.setTileImage(new GridLocation(r,lastCol), enemy);
+      //System.out.println("Populating in row " + r);
+      grid.setTileSprite(new GridLocation(r, lastCol), enemySprite);
+    }
+
+  }
+
 
 }
 
 //Method to move around the enemies/sprites on the screen
 public void moveSprites(){
 
-  //Loop through all of the rows & cols in the grid
-  
-    //Store the 2 tile locations to move
+  //Loop through all of the cells in the grid
+  for (int r = 0; r < grid.getNumRows(); r++) {
+    for (int c = 1; c < grid.getNumCols(); c++) {
 
-    //Check if the current tile has an image that is not player1      
-
-
-      //Get image/sprite from current location
-
-
-      //CASE 1: Collision with player1
-
-
-      //CASE 2: Move enemy over to new location
-
+      //Store the 2 locations to move
+      GridLocation loc = new GridLocation(r, c);
+      GridLocation newLoc = new GridLocation(r, c - 1);
       
-      //Erase image/sprite from old location
-      
-      //System.out.println(loc + " " + grid.hasTileImage(loc));
+      // Check if the current tile has an image and is NOT the player1
+      // if(grid.hasTileImage(loc) && !grid.getTileImage(loc).equals(player1) ){
+      if(grid.hasTileSprite(loc) ){
+        //System.out.println("Moving sprite found at loc " + loc);
 
+        //Get image from current location
+        //PImage img = grid.getTileImage(loc);
+        AnimatedSprite sprite = grid.getTileSprite(loc);
 
-    //CASE 3: Enemy leaves screen at first column
+        //Set image to new Location 
+        //grid.setTileImage(newLoc, img);
+        //System.out.println("Moving to newLoc" + newLoc);
+        grid.setTileSprite(newLoc, sprite);
 
+        //Erase image from old location
+        //grid.clearTileImage(loc);
+        grid.clearTileSprite(loc);
 
+        //System.out.println(loc + " " + grid.hasTileImage(loc));
+      }
+
+      //What is at the first column?
+      if (c == 1) {
+        grid.clearTileImage(newLoc);
+        grid.clearTileSprite(newLoc);
+      }
+
+    }
+  }
 }
 
 //Method to handle the collisions between Sprites on the Screen
+
+//it checks collisions - requires two parameters
+public void checkCollision(){
+for(int r = 0; r < grid.getNumRows(); r++){
+  for(int c = 1; c <grid.getNumCols(); c++){
+
+    GridLocation current = new GridLocation(r,c);
+    GridLocation newLoc = new GridLocation(r, c-1);
+
+    if(grid.hasTileImage(current)){
+      //collision occurs
+      timesGet++;
+      //clear image at original loc
+      grid.clearTileImage(current);
+    }
+  }
+}
+
+}
+
 public void handleCollisions(){
 
 
 }
 
 //method to indicate when the main game is over
-public boolean isGameOver(){
+public boolean isGameOver(){ 
   return false; //by default, the game is never over
 }
 
