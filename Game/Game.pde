@@ -61,7 +61,7 @@ void setup() {
   //loop through to find marks
   
   //Animation & Sprite setup
-  exampleAnimationSetup();
+  //exampleAnimationSetup();
 
    imageMode(CORNER);    //Set Images to read coordinates at corners
   //fullScreen();   //only use if not using a specfic bg image
@@ -86,7 +86,7 @@ void draw() {
     endGame();
   }
 
-  checkExampleAnimation();
+  //checkExampleAnimation();
   
   msElapsed +=100;
   grid.pause(100);
@@ -116,7 +116,7 @@ void keyPressed(){
     
 
   }
-if(player1Row !=-1 && keyCode == 83){
+if(player1Row != grid.getNumRows()-2 && keyCode == 83){
     //check case where out of bounds (key s)
     
     //Erase image from previous location
@@ -127,7 +127,7 @@ if(player1Row !=-1 && keyCode == 83){
     player1Row++;
 
   }
- if(player1Col !=  grid.getNumCols()-1 && keyCode == 68){
+ if(player1Col != grid.getNumCols()-2 && keyCode == 68){
 
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
@@ -136,7 +136,7 @@ if(player1Row !=-1 && keyCode == 83){
     //change the field for player1Col
     player1Col++;
   }
-  if(player1Col !=  grid.getNumCols()-1 && keyCode == 65){
+  if(player1Col !=0 && keyCode == 65){
 
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
