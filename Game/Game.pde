@@ -42,12 +42,15 @@ void setup() {
   //Set the title on the title bar
   surface.setTitle(titleText);
 
+  //Pixel width of one tile: 40
+  //Pixel height of one tile: 30
+  
   //Load images used
   //bg = loadImage("images/chess.jpg");
   bg = loadImage("images/mansion.jpg");
   bg.resize(800,600);
   player1 = loadImage("images/mchar-transformed.png");
-  player1.resize(100,100);
+  player1.resize(80,60);
   key = loadImage("images/key.png");
   key.resize(50,50);
   endScreen = loadImage("images/youwin.png");
