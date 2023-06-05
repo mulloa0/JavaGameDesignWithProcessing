@@ -121,6 +121,7 @@ void keyPressed(){
     player1Row--;
     
     
+    
 
   }
 if(player1Row != grid.getNumRows()-2 && keyCode == 83){
@@ -211,7 +212,7 @@ public void updateScreen(){
   GridLocation player1Loc = new GridLocation(player1Row,player1Col);
   grid.setTileImage(player1Loc, player1);
 
-  GridLocation haircliploc = new GridLocation(10, 2);
+  GridLocation haircliploc = new GridLocation(2, 10);
   grid.setTileImage(haircliploc, hairclip);
 
   //Display key
@@ -220,6 +221,7 @@ public void updateScreen(){
 
   //set marks
   System.out.println(grid.setNewMark("key", drawerloc));
+  System.out.println(grid.setNewMark("hairclip", haircliploc));
   
   //Loop through all the Tiles and display its images/sprites
   
