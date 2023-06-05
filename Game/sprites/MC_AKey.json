@@ -1,0 +1,87 @@
+{
+  "frames": {
+    "05.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 78,
+        "h": 171
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 7,
+        "y": 22,
+        "w": 78,
+        "h": 171
+      },
+      "sourceSize": {
+        "w": 100,
+        "h": 200
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "03.png": {
+      "frame": {
+        "x": 0,
+        "y": 171,
+        "w": 64,
+        "h": 171
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 15,
+        "y": 22,
+        "w": 64,
+        "h": 171
+      },
+      "sourceSize": {
+        "w": 100,
+        "h": 200
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "04.png": {
+      "frame": {
+        "x": 0,
+        "y": 342,
+        "w": 56,
+        "h": 171
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 24,
+        "y": 22,
+        "w": 56,
+        "h": 171
+      },
+      "sourceSize": {
+        "w": 100,
+        "h": 200
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "MC_AKey.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 78,
+      "h": 513
+    },
+    "scale": 1
+  }
+}
