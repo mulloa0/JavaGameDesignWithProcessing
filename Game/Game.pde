@@ -10,7 +10,8 @@ private int timesGet = 0;
 Grid grid = new Grid(20,20);
 //HexGrid hGrid = new HexGrid(3);
 PImage bg;
-PImage player1;
+//PImage player1;
+AnimatedSprite p1;
 PImage player2;
 PImage enemy;
 PImage key; 
@@ -49,8 +50,8 @@ void setup() {
   //bg = loadImage("images/chess.jpg");
   bg = loadImage("images/mansion.jpg");
   bg.resize(800,600);
-  player1 = loadImage("images/mchar-transformed.png");
-  player1.resize(80,60);
+  //player1 = loadImage("images/mchar-transformed.png");
+  //player1.resize(80,60);
   key = loadImage("images/key.png");
   key.resize(50,50);
   drawer = loadImage("images/drawer.png");
@@ -68,7 +69,7 @@ void setup() {
   //loop through to find marks
   
   //Animation & Sprite setup
-  //exampleAnimationSetup();
+  animationSetup();
 
    imageMode(CORNER);    //Set Images to read coordinates at corners
   //fullScreen();   //only use if not using a specfic bg image
@@ -82,10 +83,10 @@ void draw() {
 
   updateTitleBar();
 
-  if (msElapsed % 300 == 0) {
-    populateSprites();
-    moveSprites();
-  }
+  // if (msElapsed % 300 == 0) {
+  //   populateSprites();
+  //   moveSprites();
+  // }
 
   updateScreen();
   
@@ -106,7 +107,7 @@ void keyPressed(){
   //check what key was pressed
   System.out.println("Key pressed: " + keyCode); //keyCode gives you an integer for the key
 
-  //What to do when a key is pressed?
+  //What to do when a key is pressed?B
   
 
   //set "w" key to move the player1 up
@@ -115,7 +116,7 @@ void keyPressed(){
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
     
-    grid.clearTileImage(oldLoc);
+    grid.clearTileSprite(oldLoc);
 
     //change the field for player1Row
     player1Row--;
@@ -128,7 +129,7 @@ if(player1Row != grid.getNumRows()-2 && keyCode == 83){
     
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
-    grid.clearTileImage(oldLoc);
+    grid.clearTileSprite(oldLoc);
 
     //change the field for player1Row
     player1Row++;
@@ -138,7 +139,7 @@ if(player1Row != grid.getNumRows()-2 && keyCode == 83){
 
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
-    grid.clearTileImage(oldLoc);
+    grid.clearTileSprite(oldLoc);
 
     //change the field for player1Col
     player1Col++;
@@ -147,7 +148,7 @@ if(player1Row != grid.getNumRows()-2 && keyCode == 83){
 
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
-    grid.clearTileImage(oldLoc);
+    grid.clearTileSprite(oldLoc);
 
     //change the field for player1Col
     player1Col--;
@@ -208,8 +209,12 @@ public void updateScreen(){
   background(bg);
 
   //Display the Player1 image
-  GridLocation player1Loc = new GridLocation(player1Row,player1Col);
-  grid.setTileImage(player1Loc, player1);
+  // GridLocation player1Loc = new GridLocation(player1Row,player1Col);
+  // grid.setTileImage(player1Loc, player1);
+
+  GridLocation p1Loc= new GridLocation(player1Row,player1Col);
+  grid.setTileSprite(p1Loc, p1);
+
 
   GridLocation haircliploc = new GridLocation(10, 2);
   grid.setTileImage(haircliploc, hairclip);
@@ -327,8 +332,9 @@ if(newImage == null){
 }
 
 //check if player interacts with item or npc
-if(player1.equals(image) && key.equals(newImage)){
-  grid.clearTileImage(current);
+// if(player1.equals(image) && key.equals(newImage)){
+if(p1.equals(sprite) && key.equals(newImage)){
+    grid.clearTileSprite(current);
 }
 
 return true;
@@ -360,7 +366,16 @@ public void endGame(){
 //example method that creates 5 horses along the screen
 public void exampleAnimationSetup(){  
   int i = 2;
-  exampleSprite = new AnimatedSprite("sprites/horse_run.png", 50.0, i*75.0, "sprites/horse_run.json");
+  exampleSprite = new AnimatedSprite("sprites/horse_run.png", "sprites/horse_run.json");
+}
+
+public void animationSetup(){  
+  
+  p1 = new AnimatedSprite("sprites/MC_AKey.png", "sprites/MC_AKey.json");
+  p1.resize(50,80);
+  GridLocation p1Loc= new GridLocation(player1Row,player1Col);
+  grid.setTileSprite(p1Loc, p1);
+
 }
 
 //example method that animates the horse Sprites
