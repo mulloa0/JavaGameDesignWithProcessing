@@ -212,7 +212,7 @@ public class Grid{
   public void showTileSprite(GridLocation loc){
     GridTile tile = getTile(loc);
     if(tile.hasSprite()){
-      tile.getSprite().animate();
+      tile.getSprite().animateMove(0.0, 0.0, 1.0, true);
     }
   }
 

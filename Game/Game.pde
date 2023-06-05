@@ -14,6 +14,8 @@ PImage player1;
 PImage player2;
 PImage enemy;
 PImage key; 
+PImage drawer;
+PImage hairclip;
 ArrayList<String> item = new ArrayList<String>();
 AnimatedSprite enemySprite;
 PImage endScreen;
@@ -29,8 +31,6 @@ boolean doAnimation;
 int player1Row = 3;
 int player1Col = 0;
 
-int keyRow = 1;
-int keyCol = 1;
 
 
 //Required Processing method that gets run once
@@ -53,6 +53,10 @@ void setup() {
   player1.resize(80,60);
   key = loadImage("images/key.png");
   key.resize(50,50);
+  drawer = loadImage("images/drawer.png");
+  drawer.resize(80,60);
+  hairclip = loadImage("images/hairclip-removebg-preview.png");
+  hairclip.resize(80,60);
   endScreen = loadImage("images/youwin.png");
 
   // Load a soundfile from the /data folder of the sketch and play it back
@@ -60,7 +64,7 @@ void setup() {
   // song.play();
 
   //set up the images
-  //set marks
+
   //loop through to find marks
   
   //Animation & Sprite setup
@@ -103,7 +107,7 @@ void keyPressed(){
   System.out.println("Key pressed: " + keyCode); //keyCode gives you an integer for the key
 
   //What to do when a key is pressed?
-  //check collisions
+  
 
   //set "w" key to move the player1 up
   if(player1Row !=0 && keyCode == 87){
@@ -115,7 +119,7 @@ void keyPressed(){
 
     //change the field for player1Row
     player1Row--;
-
+    
     
 
   }
@@ -207,9 +211,15 @@ public void updateScreen(){
   GridLocation player1Loc = new GridLocation(player1Row,player1Col);
   grid.setTileImage(player1Loc, player1);
 
+  GridLocation haircliploc = new GridLocation(10, 2);
+  grid.setTileImage(haircliploc, hairclip);
+
   //Display key
-  GridLocation keyloc = new GridLocation(keyRow, keyCol);
-  grid.setTileImage(keyloc, key);
+  GridLocation drawerloc = new GridLocation(5, 2);
+  grid.setTileImage(drawerloc, drawer);
+
+  //set marks
+  System.out.println(grid.setNewMark("key", drawerloc));
   
   //Loop through all the Tiles and display its images/sprites
   
