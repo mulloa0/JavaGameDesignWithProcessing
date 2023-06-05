@@ -17,6 +17,7 @@ PImage enemy;
 PImage key; 
 PImage drawer;
 PImage hairclip;
+PImage tv;
 ArrayList<String> item = new ArrayList<String>();
 AnimatedSprite enemySprite;
 PImage endScreen;
@@ -31,6 +32,8 @@ boolean doAnimation;
 
 int player1Row = 3;
 int player1Col = 0;
+
+ArrayList<String> marks = new ArrayList<String>();
 
 
 
@@ -58,6 +61,8 @@ void setup() {
   drawer.resize(80,60);
   hairclip = loadImage("images/hairclip-removebg-preview.png");
   hairclip.resize(80,60);
+  tv = loadImage("images/tv-removebg-preview.png");
+  tv.resize(120,90);
   endScreen = loadImage("images/youwin.png");
 
   // Load a soundfile from the /data folder of the sketch and play it back
@@ -65,6 +70,7 @@ void setup() {
   // song.play();
 
   //set up the images
+  itemSetup();
 
   //loop through to find marks
   
@@ -123,6 +129,7 @@ void keyPressed(){
     
     
 
+
   }
 if(player1Row != grid.getNumRows()-2 && keyCode == 83){
     //check case where out of bounds (key s)
@@ -165,7 +172,11 @@ if(player1Row != grid.getNumRows()-2 && keyCode == 83){
     //what to do if clicked?
     GridLocation clickedLoc= grid.getGridLocation();
     GridLocation player1loc= new GridLocation(player1Row,player1Col);
+
+    //check if the lcoations are within 1
     if(clickedLoc.equals(player1loc)){
+
+      //check if any nearby tiles hold any marks --> return the String
       player1Col--;
     }
 
@@ -188,6 +199,12 @@ if(player1Row != grid.getNumRows()-2 && keyCode == 83){
 
 
 //------------------ CUSTOM  METHODS --------------------//
+
+public void itemSetup(){
+  marks.add(0,"key");
+  
+
+}
 
 //method to update the Title Bar of the Game
 public void updateTitleBar(){
@@ -223,8 +240,13 @@ public void updateScreen(){
   GridLocation drawerloc = new GridLocation(5, 2);
   grid.setTileImage(drawerloc, drawer);
 
+  GridLocation tvloc = new GridLocation (15, 15);
+  grid.setTileImage(tvloc, tv);
+
   //set marks
   System.out.println(grid.setNewMark("key", drawerloc));
+  System.out.println(grid.setNewMark("hairclip", haircliploc));
+  System.out.println(grid.setNewMark("tv", tvloc));
   
   //Loop through all the Tiles and display its images/sprites
   
