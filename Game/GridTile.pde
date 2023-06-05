@@ -62,14 +62,11 @@ public class GridTile{
   // if it does not already have a mark, 
   // returns true or false if successful
   public boolean setNewMark(String mark){
-    if(this.mark.equals(noMark)){
+
       this.mark = mark;
       System.out.println("Successfully changed mark");
       return true;
-    } else {
-      System.out.println("That GridTile is already taken!");
-      return false;
-    }
+    
   }
   
   //------------------PImage Methods ---------------//
