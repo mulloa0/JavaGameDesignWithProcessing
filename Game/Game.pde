@@ -201,7 +201,23 @@ if(player1Row != grid.getNumRows()-2 && keyCode == 83){
 //------------------ CUSTOM  METHODS --------------------//
 
 public void itemSetup(){
-  marks.add(0,"key");
+
+  GridLocation haircliploc = new GridLocation(10, 2);
+  grid.setTileImage(haircliploc, hairclip);
+
+  //Display key
+  GridLocation drawerloc = new GridLocation(5, 2);
+  grid.setTileImage(drawerloc, drawer);
+
+  GridLocation tvloc = new GridLocation (15, 15);
+  grid.setTileImage(tvloc, tv);
+
+  //set marks
+  System.out.println(grid.setNewMark("key", drawerloc));
+  System.out.println(grid.setNewMark("hairclip", haircliploc));
+  System.out.println(grid.setNewMark("tv", tvloc));
+
+  //marks.add(0,"key");
   
 
 }
@@ -232,35 +248,10 @@ public void updateScreen(){
   GridLocation p1Loc= new GridLocation(player1Row,player1Col);
   grid.setTileSprite(p1Loc, p1);
 
-
-  GridLocation haircliploc = new GridLocation(10, 2);
-  grid.setTileImage(haircliploc, hairclip);
-
-  //Display key
-  GridLocation drawerloc = new GridLocation(5, 2);
-  grid.setTileImage(drawerloc, drawer);
-
-  GridLocation tvloc = new GridLocation (15, 15);
-  grid.setTileImage(tvloc, tv);
-
-  //set marks
-  System.out.println(grid.setNewMark("key", drawerloc));
-  System.out.println(grid.setNewMark("hairclip", haircliploc));
-  System.out.println(grid.setNewMark("tv", tvloc));
-  
-  //Loop through all the Tiles and display its images/sprites
-  
-
-      //Store temporary GridLocation
-      
-      //Check if the tile has an image/sprite 
-      //--> Display the tile's image/sprite
-
-
-
   //Update other screen elements
   grid.showImages();
   grid.showSprites();
+  grid.showGridSprites();
 
 }
 
