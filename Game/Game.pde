@@ -386,7 +386,8 @@ public void animationSetup(){
   
   p1 = new AnimatedSprite("sprites/MC_AKey.png", "sprites/MC_AKey.json");
   p1.resize(50,80);
-  GridLocation p1Loc= new GridLocation(player1Row,player1Col);
+  p1.animate(1.0);
+  GridLocaddwwtion p1Loc= new GridLocation(player1Row,player1Col);
   grid.setTileSprite(p1Loc, p1);
 
 }
