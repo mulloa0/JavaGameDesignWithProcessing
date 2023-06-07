@@ -3,37 +3,61 @@
  * Authors: _____________________
  */
 
+//import processing.sound.*;
+
 //GAME VARIABLES
-private int msElapsed = 0;
 private int timesGet = 0;
-//Grid grid = new Grid(5,15);
-Grid grid = new Grid(20,20);
-//HexGrid hGrid = new HexGrid(3);
-PImage bg;
-//PImage player1;
-AnimatedSprite p1;
-PImage player2;
-PImage enemy;
-PImage key; 
-PImage drawer;
-PImage hairclip;
-PImage tv;
-ArrayList<String> item = new ArrayList<String>();
-AnimatedSprite enemySprite;
-PImage endScreen;
+private int msElapsed = 0;
 String titleText = "Murder Mystery";
 String extraText = "Mansion Conspiracy -Maria & Sadia";
-AnimatedSprite exampleSprite;
-boolean doAnimation;
 
-//HexGrid hGrid = new HexGrid(3);
-//import processing.sound.*;
-//SoundFile song;
+//Screens
+Screen currentScreen;
+World currentWorld;
+Grid currentGrid;
 
+//Splash Screen Variables
+Screen splashScreen;
+String splashBgFile = "images/mansion.jpg";
+PImage splashBg;
+
+//Main Screen Variables
+Grid mainGrid;
+String mainBgFile = "images/basement.PNG";
+PImage mainBg;
+
+AnimatedSprite p1;
+String p1File = "sprites/MC_AKey.png";
+String p1json = "sprites/MC_AKey.json";
 int player1Row = 3;
 int player1Col = 0;
+int health = 3;
+
+AnimatedSprite enemySprite;
+PImage enemy;
+String enemyFile = "";
+// AnimatedSprite exampleSprite;
+boolean doAnimation;
 
 ArrayList<String> marks = new ArrayList<String>();
+ArrayList<String> items = new ArrayList<String>();
+PImage key; 
+String keyFile = "images/key.png";
+PImage drawer;
+String drawerFile = "images/drawer.png";
+PImage hairclip;
+String hairclipFile = "images/hairclip-removebg-preview.png";
+PImage tv;
+String tvFile = "images/tv-removebg-preview.png";
+
+//EndScreen variables
+World endScreen;
+PImage endBg;
+String endBgFile = "images/youwin.png";
+
+//Example Variables
+//HexGrid hGrid = new HexGrid(3);
+//SoundFile song;
 
 
 
@@ -49,37 +73,47 @@ void setup() {
   //Pixel width of one tile: 40
   //Pixel height of one tile: 30
   
-  //Load images used
-  //bg = loadImage("images/chess.jpg");
-  bg = loadImage("images/mansion.jpg");
-  bg.resize(800,600);
-  //player1 = loadImage("images/mchar-transformed.png");
-  //player1.resize(80,60);
-  key = loadImage("images/key.png");
+  //Load BG images used
+  splashBg = loadImage(splashBgFile);
+  splashBg.resize(800, 600);
+  mainBg = loadImage(mainBgFile);
+  mainBg.resize(800, 600);
+  endBg = loadImage(endBgFile);
+  endBg.resize(800, 600);
+
+  //setup the screens/worlds/grids in the Game
+  splashScreen = new Screen("splash", splashBg);
+  mainGrid = new Grid("basement", mainBg, 20,20);
+  endScreen = new World("end", endBg);
+  currentScreen = splashScreen;
+  currentGrid = mainGrid;
+
+  //Setup player1 animation
+  playerAnimationSetup();
+
+  //setup the item images
+  key = loadImage(keyFile);
   key.resize(50,50);
-  drawer = loadImage("images/drawer.png");
+  drawer = loadImage(drawerFile);
   drawer.resize(80,60);
-  hairclip = loadImage("images/hairclip-removebg-preview.png");
+  hairclip = loadImage(hairclipFile);
   hairclip.resize(80,60);
-  tv = loadImage("images/tv-removebg-preview.png");
+  tv = loadImage(tvFile);
   tv.resize(120,90);
-  endScreen = loadImage("images/youwin.png");
+
+  //set up the items into the first Grid
+  itemSetup1();
+
+
+  // exampleSprite = new AnimatedSprite("sprites/horse_run.png", "sprites/horse_run.json");
+  // exampleAnimationSetup();
 
   // Load a soundfile from the /data folder of the sketch and play it back
   // song = new SoundFile(this, "sounds/Lenny_Kravitz_Fly_Away.mp3");
   // song.play();
 
-  //set up the images
-  itemSetup();
-
-  //loop through to find marks
-  
-  //Animation & Sprite setup
-  animationSetup();
-
    imageMode(CORNER);    //Set Images to read coordinates at corners
   //fullScreen();   //only use if not using a specfic bg image
-  
   println("Game started...");
 }
 
@@ -103,7 +137,7 @@ void draw() {
   //checkExampleAnimation();
   
   msElapsed +=100;
-  grid.pause(100);
+  currentGrid.pause(100);
 
 }
 
@@ -122,7 +156,7 @@ void keyPressed(){
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
     
-    grid.clearTileSprite(oldLoc);
+    currentGrid.clearTileSprite(oldLoc);
 
     //change the field for player1Row
     player1Row--;
@@ -131,22 +165,22 @@ void keyPressed(){
 
 
   }
-if(player1Row != grid.getNumRows()-2 && keyCode == 83){
+if(player1Row != currentGrid.getNumRows()-2 && keyCode == 83){
     //check case where out of bounds (key s)
     
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
-    grid.clearTileSprite(oldLoc);
+    currentGrid.clearTileSprite(oldLoc);
 
     //change the field for player1Row
     player1Row++;
 
   }
- if(player1Col != grid.getNumCols()-2 && keyCode == 68){
+ if(player1Col != currentGrid.getNumCols()-2 && keyCode == 68){
 
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
-    grid.clearTileSprite(oldLoc);
+    currentGrid.clearTileSprite(oldLoc);
 
     //change the field for player1Col
     player1Col++;
@@ -155,7 +189,7 @@ if(player1Row != grid.getNumRows()-2 && keyCode == 83){
 
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
-    grid.clearTileSprite(oldLoc);
+    currentGrid.clearTileSprite(oldLoc);
 
     //change the field for player1Col
     player1Col--;
@@ -167,10 +201,12 @@ if(player1Row != grid.getNumRows()-2 && keyCode == 83){
   
     //check if click was successful
     System.out.println("Mouse was clicked at (" + mouseX + "," + mouseY + ")");
-    System.out.println("Grid location: " + grid.getGridLocation());
+    if(currentGrid != null){
+      System.out.println("Grid location: " + currentGrid.getGridLocation());
+    }
 
     //what to do if clicked?
-    GridLocation clickedLoc= grid.getGridLocation();
+    GridLocation clickedLoc= currentGrid.getGridLocation();
     GridLocation player1loc= new GridLocation(player1Row,player1Col);
 
     //check if the lcoations are within 1
@@ -185,12 +221,12 @@ if(player1Row != grid.getNumRows()-2 && keyCode == 83){
     //loop thru the 3x3 grid surrouding player
 
 
-
-
     //Toggle the animation on & off
     doAnimation = !doAnimation;
     System.out.println("doAnimation: " + doAnimation);
-    grid.setMark("X",grid.getGridLocation());
+    if(currentGrid != null){
+      currentGrid.setMark("X",currentGrid.getGridLocation());
+    }
     
   }
 
@@ -200,22 +236,22 @@ if(player1Row != grid.getNumRows()-2 && keyCode == 83){
 
 //------------------ CUSTOM  METHODS --------------------//
 
-public void itemSetup(){
+public void itemSetup1(){
 
   GridLocation haircliploc = new GridLocation(10, 2);
-  grid.setTileImage(haircliploc, hairclip);
+  mainGrid.setTileImage(haircliploc, hairclip);
 
   //Display key
   GridLocation drawerloc = new GridLocation(5, 2);
-  grid.setTileImage(drawerloc, drawer);
+  mainGrid.setTileImage(drawerloc, drawer);
 
   GridLocation tvloc = new GridLocation (15, 15);
-  grid.setTileImage(tvloc, tv);
+  mainGrid.setTileImage(tvloc, tv);
 
   //set marks
-  System.out.println(grid.setNewMark("key", drawerloc));
-  System.out.println(grid.setNewMark("hairclip", haircliploc));
-  System.out.println(grid.setNewMark("tv", tvloc));
+  System.out.println(currentGrid.setNewMark("key", drawerloc));
+  System.out.println(currentGrid.setNewMark("hairclip", haircliploc));
+  System.out.println(currentGrid.setNewMark("tv", tvloc));
 
   //marks.add(0,"key");
   
@@ -237,21 +273,33 @@ public void updateTitleBar(){
 
 //method to update what is drawn on the screen each frame
 public void updateScreen(){
+  
+  //Update the Background
+  background(currentScreen.getBg());
 
-  //update the background
-  background(bg);
+  //splashScreen update
+  if(splashScreen.getScreenTime() > 3000 && splashScreen.getScreenTime() < 5000){
+    currentScreen = mainGrid;
+  }
 
-  //Display the Player1 image
-  // GridLocation player1Loc = new GridLocation(player1Row,player1Col);
-  // grid.setTileImage(player1Loc, player1);
+  //mainGrid Screen Updates
+  if(currentScreen == mainGrid){
+    currentGrid = mainGrid;
 
-  GridLocation p1Loc= new GridLocation(player1Row,player1Col);
-  grid.setTileSprite(p1Loc, p1);
+    //Display the Player1 image
+    // GridLocation player1Loc = new GridLocation(player1Row,player1Col);
+    // currentGrid.setTileImage(player1Loc, player1);
 
-  //Update other screen elements
-  grid.showImages();
-  grid.showSprites();
-  grid.showGridSprites();
+    GridLocation p1Loc= new GridLocation(player1Row,player1Col);
+    currentGrid.setTileSprite(p1Loc, p1);
+
+    //Update other screen elements
+    currentGrid.showImages();
+    currentGrid.showSprites();
+    currentGrid.showGridSprites();
+  }
+
+  //update other screens?
 
 }
 
@@ -259,19 +307,19 @@ public void updateScreen(){
 public void populateSprites(){
 
   //What is the index for the last column?
-  int lastCol = grid.getNumCols()-1;
+  int lastCol = currentGrid.getNumCols()-1;
 
   //Loop through all the rows in the last column
-  for(int r=0; r<grid.getNumRows(); r++){
+  for(int r=0; r<currentGrid.getNumRows(); r++){
 
     //Generate a random number
     double rando = Math.random();
 
     //10% of the time, decide to add an image to a Tile
     if(rando < 0.1){
-      //grid.setTileImage(new GridLocation(r,lastCol), enemy);
+      //currentGrid.setTileImage(new GridLocation(r,lastCol), enemy);
       //System.out.println("Populating in row " + r);
-      grid.setTileSprite(new GridLocation(r, lastCol), enemySprite);
+      currentGrid.setTileSprite(new GridLocation(r, lastCol), enemySprite);
     }
 
   }
@@ -283,38 +331,38 @@ public void populateSprites(){
 public void moveSprites(){
 
   //Loop through all of the cells in the grid
-  for (int r = 0; r < grid.getNumRows(); r++) {
-    for (int c = 1; c < grid.getNumCols(); c++) {
+  for (int r = 0; r < currentGrid.getNumRows(); r++) {
+    for (int c = 1; c < currentGrid.getNumCols(); c++) {
 
       //Store the 2 locations to move
       GridLocation loc = new GridLocation(r, c);
       GridLocation newLoc = new GridLocation(r, c - 1);
       
       // Check if the current tile has an image and is NOT the player1
-      // if(grid.hasTileImage(loc) && !grid.getTileImage(loc).equals(player1) ){
-      if(grid.hasTileSprite(loc) ){
+      // if(currentGrid.hasTileImage(loc) && !currentGrid.getTileImage(loc).equals(player1) ){
+      if(currentGrid.hasTileSprite(loc) ){
         //System.out.println("Moving sprite found at loc " + loc);
 
         //Get image from current location
-        //PImage img = grid.getTileImage(loc);
-        AnimatedSprite sprite = grid.getTileSprite(loc);
+        //PImage img = currentGrid.getTileImage(loc);
+        AnimatedSprite sprite = currentGrid.getTileSprite(loc);
 
         //Set image to new Location 
-        //grid.setTileImage(newLoc, img);
+        //currentGrid.setTileImage(newLoc, img);
         //System.out.println("Moving to newLoc" + newLoc);
-        grid.setTileSprite(newLoc, sprite);
+        currentGrid.setTileSprite(newLoc, sprite);
 
         //Erase image from old location
-        //grid.clearTileImage(loc);
-        grid.clearTileSprite(loc);
+        //currentGrid.clearTileImage(loc);
+        currentGrid.clearTileSprite(loc);
 
-        //System.out.println(loc + " " + grid.hasTileImage(loc));
+        //System.out.println(loc + " " + currentGrid.hasTileImage(loc));
       }
 
       //What is at the first column?
       if (c == 1) {
-        grid.clearTileImage(newLoc);
-        grid.clearTileSprite(newLoc);
+        currentGrid.clearTileImage(newLoc);
+        currentGrid.clearTileSprite(newLoc);
       }
 
     }
@@ -328,7 +376,7 @@ public boolean checkCollision(GridLocation current, GridLocation newLoc){
   
 
 //get image at current location first, if any
-PImage image = grid.getTileImage(current);
+PImage image = currentGrid.getTileImage(current);
 
 //if nothing is there, there can't be a collision
 if(image == null){
@@ -336,8 +384,8 @@ if(image == null){
 }
 
 //get image at new location, if any
-PImage newImage = grid.getTileImage(newLoc);
-Sprite sprite = grid.getTileSprite(newLoc);
+PImage newImage = currentGrid.getTileImage(newLoc);
+Sprite sprite = currentGrid.getTileSprite(newLoc);
 
 //if nothing is at new location, there can't be a collision 
 if(newImage == null){
@@ -347,7 +395,7 @@ if(newImage == null){
 //check if player interacts with item or npc
 // if(player1.equals(image) && key.equals(newImage)){
 if(p1.equals(sprite) && key.equals(newImage)){
-    grid.clearTileSprite(current);
+    currentGrid.clearTileSprite(current);
 }
 
 return true;
@@ -372,29 +420,40 @@ public void endGame(){
     //Update the title bar
 
     //Show any end imagery
-    image(endScreen, 100,100);
+    // image(endScreen, 100,100);
+    currentScreen = endScreen;
 
 }
 
-//example method that creates 5 horses along the screen
-public void exampleAnimationSetup(){  
-  int i = 2;
-  exampleSprite = new AnimatedSprite("sprites/horse_run.png", "sprites/horse_run.json");
-}
 
-public void animationSetup(){  
+
+public void playerAnimationSetup(){  
   
-  p1 = new AnimatedSprite("sprites/MC_AKey.png", "sprites/MC_AKey.json");
+  p1 = new AnimatedSprite(p1File, p1json);
   p1.resize(50,80);
   p1.animate(1.0);
-  GridLocaddwwtion p1Loc= new GridLocation(player1Row,player1Col);
-  grid.setTileSprite(p1Loc, p1);
+  GridLocation p1Loc= new GridLocation(player1Row,player1Col);
+  currentGrid.setTileSprite(p1Loc, p1);
 
 }
 
-//example method that animates the horse Sprites
-public void checkExampleAnimation(){
-  if(doAnimation){
-    exampleSprite.animateVertical(5.0, 1.0, true);
-  }
-}
+
+// //example method that creates 5 horses along the screen
+// public void exampleAnimationSetup(){  
+//   int i = 2;
+//   exampleSprite = new AnimatedSprite("sprites/horse_run.png", "sprites/horse_run.json");
+// }
+
+
+
+// //example method that animates the horse Sprites
+// public void checkExampleAnimation(){
+//   if(doAnimation){
+//     exampleSprite.animateVertical(5.0, 1.0, true);
+//   }
+// }
+
+
+
+
+
