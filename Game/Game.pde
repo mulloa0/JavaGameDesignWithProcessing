@@ -37,7 +37,7 @@ AnimatedSprite enemySprite;
 PImage enemy;
 String enemyFile = "";
 // AnimatedSprite exampleSprite;
-boolean doAnimation;
+boolean doAnimation;    
 
 ArrayList<String> marks = new ArrayList<String>();
 ArrayList<String> items = new ArrayList<String>();
@@ -219,7 +219,56 @@ if(player1Row != currentGrid.getNumRows()-2 && keyCode == 83){
 
     //is an object nearby
     //loop thru the 3x3 grid surrouding player
+  for(int r=-1; r<currentGrid.getNumRows(); r++ ){
+    for(int c=-1; c<currentGrid.getNumCols(); c++){
 
+      GridLocation loc = new GridLocation(r,c);
+       
+      //if item is found
+      if(currentGrid.hasMark(loc)){
+
+         String tempMark= currentGrid.getMark(loc);
+
+       
+       //if hairclip item
+      if( tempMark.equals("hairclip") ){
+        
+        //add item to array
+        items.add(tempMark);
+        
+        // image of item of disapeers
+        currentGrid.removeMark(loc);
+        currentGrid.clearTileImage(loc);
+      }
+
+       //if drawer item
+      if( tempMark.equals("drawer") ){
+        
+        //change to key
+        currentGrid.setMark("key", loc);
+
+        // change image to a key
+        currentGrid.setTileImage(loc,key);
+
+      }
+
+             
+       //if key item
+      if( tempMark.equals("key") ){
+        
+        //add item to array
+        items.add(tempMark);
+        
+        // image of item of disapeers
+        currentGrid.removeMark(loc);
+        currentGrid.clearTileImage(loc);
+      }
+
+
+      }
+    }
+    }
+  
 
     //Toggle the animation on & off
     doAnimation = !doAnimation;
@@ -249,7 +298,7 @@ public void itemSetup1(){
   mainGrid.setTileImage(tvloc, tv);
 
   //set marks
-  System.out.println(currentGrid.setNewMark("key", drawerloc));
+  System.out.println(currentGrid.setNewMark("drawer", drawerloc));
   System.out.println(currentGrid.setNewMark("hairclip", haircliploc));
   System.out.println(currentGrid.setNewMark("tv", tvloc));
 
