@@ -23,8 +23,13 @@ PImage splashBg;
 
 //Main Screen Variables
 Grid mainGrid;
-String mainBgFile = "images/basement.PNG";
+String mainBgFile = "images/mansion living room.png";
 PImage mainBg;
+
+//Basement Screen Variables
+Grid basementGrid;
+String basementBgFile = "images/basement.PNG";
+PImage basementBg;
 
 AnimatedSprite p1;
 String p1File = "sprites/MC_AKey.png";
@@ -49,6 +54,8 @@ PImage hairclip;
 String hairclipFile = "images/hairclip-removebg-preview.png";
 PImage tv;
 String tvFile = "images/tv-removebg-preview.png";
+PImage knight;
+String knightfile = "images/Knight .png";
 
 //EndScreen variables
 World endScreen;
@@ -78,12 +85,15 @@ void setup() {
   splashBg.resize(800, 600);
   mainBg = loadImage(mainBgFile);
   mainBg.resize(800, 600);
+  basementBg = loadImage(basementBgFile);
+  basementBg.resize(800,600);
   endBg = loadImage(endBgFile);
   endBg.resize(800, 600);
 
   //setup the screens/worlds/grids in the Game
   splashScreen = new Screen("splash", splashBg);
-  mainGrid = new Grid("basement", mainBg, 20,20);
+  mainGrid = new Grid("living room", mainBg, 20,20);
+  basementGrid = new Grid("basement", basementBg, 20, 20);
   endScreen = new World("end", endBg);
   currentScreen = splashScreen;
   currentGrid = mainGrid;
@@ -100,6 +110,8 @@ void setup() {
   hairclip.resize(80,60);
   tv = loadImage(tvFile);
   tv.resize(120,90);
+  knight = loadImage(knightfile);
+  knight.resize(120,90);
 
   //set up the items into the first Grid
   itemSetup1();
@@ -264,6 +276,17 @@ if(player1Row != currentGrid.getNumRows()-2 && keyCode == 83){
         currentGrid.clearTileImage(loc);
       }
 
+        //if knight item
+      if( tempMark.equals("Knight") ){
+        
+        //add item to array
+        //items.add(tempMark);
+        
+        //image of item of disapeers
+        currentGrid.removeMark(loc);
+        currentGrid.clearTileImage(loc);
+        currentScreen.setBg(basementBg);
+      }
 
       }
     }
@@ -297,10 +320,14 @@ public void itemSetup1(){
   GridLocation tvloc = new GridLocation (15, 15);
   mainGrid.setTileImage(tvloc, tv);
 
+  GridLocation knightloc = new GridLocation(19, 9);
+  mainGrid.setTileImage(knightloc, knight);
+
   //set marks
   System.out.println(currentGrid.setNewMark("drawer", drawerloc));
   System.out.println(currentGrid.setNewMark("hairclip", haircliploc));
   System.out.println(currentGrid.setNewMark("tv", tvloc));
+  System.out.println(currentGrid.setNewMark("Knight", knightloc));
 
   //marks.add(0,"key");
   
