@@ -56,6 +56,10 @@ PImage tv;
 String tvFile = "images/tv-removebg-preview.png";
 PImage knight;
 String knightfile = "images/Knight .png";
+PImage fingerprint;
+String fingerprintFile = "images/fingerprint.png";
+PImage hairstrand;
+String hairstrandFile = "images/hairstrand.png";
 
 //EndScreen variables
 World endScreen;
@@ -112,6 +116,8 @@ void setup() {
   tv.resize(120,90);
   knight = loadImage(knightfile);
   knight.resize(120,90);
+  fingerprint = loadImage(fingerprintFile);
+  fingerprint.resize(40,30);
 
   //set up the items into the first Grid
   itemSetup1();
@@ -231,8 +237,8 @@ if(player1Row != currentGrid.getNumRows()-2 && keyCode == 83){
 
     //is an object nearby
     //loop thru the 3x3 grid surrouding player
-  for(int r=-1; r<currentGrid.getNumRows(); r++ ){
-    for(int c=-1; c<currentGrid.getNumCols(); c++){
+  for(int r=0; r<currentGrid.getNumRows(); r++ ){
+    for(int c=0; c<currentGrid.getNumCols(); c++){
 
       GridLocation loc = new GridLocation(r,c);
        
@@ -323,11 +329,16 @@ public void itemSetup1(){
   GridLocation knightloc = new GridLocation(19, 9);
   mainGrid.setTileImage(knightloc, knight);
 
+  GridLocation fploc = new GridLocation(13, 5);
+  mainGrid.setTileImage(fploc, fingerprint);
+
   //set marks
   System.out.println(currentGrid.setNewMark("drawer", drawerloc));
   System.out.println(currentGrid.setNewMark("hairclip", haircliploc));
   System.out.println(currentGrid.setNewMark("tv", tvloc));
   System.out.println(currentGrid.setNewMark("Knight", knightloc));
+  System.out.println(currentGrid.setNewMark("fingerprint", fploc));
+
 
   //marks.add(0,"key");
   
