@@ -76,7 +76,7 @@ String endBgFile = "images/youwin.png";
 void setup() {
 
   //Match the screen size to the background image size
-  size(800, 600);
+  size(800, 900);
 
   //Set the title on the title bar
   surface.setTitle(titleText);
@@ -86,18 +86,18 @@ void setup() {
   
   //Load BG images used
   splashBg = loadImage(splashBgFile);
-  splashBg.resize(800, 600);
+  splashBg.resize(width, height);
   mainBg = loadImage(mainBgFile);
-  mainBg.resize(800, 600);
+  mainBg.resize(width, height);
   basementBg = loadImage(basementBgFile);
-  basementBg.resize(800,600);
+  basementBg.resize(width, height);
   endBg = loadImage(endBgFile);
-  endBg.resize(800, 600);
+  endBg.resize(width, height);
 
   //setup the screens/worlds/grids in the Game
   splashScreen = new Screen("splash", splashBg);
-  mainGrid = new Grid("living room", mainBg, 20,20);
-  basementGrid = new Grid("basement", basementBg, 20, 20);
+  mainGrid = new Grid("living room", mainBg, 18,16);
+  basementGrid = new Grid("basement", basementBg, 18,16);
   endScreen = new World("end", endBg);
   currentScreen = splashScreen;
   currentGrid = mainGrid;
@@ -141,6 +141,9 @@ void setup() {
 //(Anything drawn on the screen should be called from here)
 void draw() { 
 
+
+  
+
   updateTitleBar();
 
   // if (msElapsed % 300 == 0) {
@@ -158,6 +161,7 @@ void draw() {
   
   msElapsed +=100;
   currentGrid.pause(100);
+
 
 }
 
@@ -185,7 +189,7 @@ void keyPressed(){
 
 
   }
-if(player1Row != currentGrid.getNumRows()-2 && keyCode == 83){
+if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
     //check case where out of bounds (key s)
     
     //Erase image from previous location
@@ -196,7 +200,7 @@ if(player1Row != currentGrid.getNumRows()-2 && keyCode == 83){
     player1Row++;
 
   }
- if(player1Col != currentGrid.getNumCols()-2 && keyCode == 68){
+ if(player1Col != currentGrid.getNumCols()-1 && keyCode == 68){
 
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
@@ -270,10 +274,11 @@ void mouseClicked(){
             }
 
             //if drawer item
-            if( tempMark.equals("drawer") ){
+            else if( tempMark.equals("drawer") ){
               
               //change to key
               currentGrid.setMark("key", loc);
+              //System.out.println("SetMark called with: " + loc);
 
               // change image to a key
               currentGrid.setTileImage(loc,key);
@@ -282,19 +287,19 @@ void mouseClicked(){
 
                 
             //if key item
-            if( tempMark.equals("key") ){
+            else if( tempMark.equals("key") ){
               
               //add item to array
               items.add(tempMark);
               println("KEY ITEM HELD");
             
-            // image of item of disapeers
-            currentGrid.removeMark(loc);
-            currentGrid.clearTileImage(loc);
-          }
+              // image of item of disapeers
+              currentGrid.removeMark(loc);
+              currentGrid.clearTileImage(loc);
+            }
 
             //if knight item
-          if( tempMark.equals("Knight") ){
+          else if( tempMark.equals("Knight") ){
             
             //add item to array
             //items.add(tempMark);
@@ -305,7 +310,7 @@ void mouseClicked(){
             currentScreen.setBg(basementBg);
           }
 
-          if( tempMark.equals("fingerprint") ){
+          else if( tempMark.equals("fingerprint") ){
             
             //add item to array
             items.add(tempMark);
@@ -315,7 +320,7 @@ void mouseClicked(){
             currentGrid.clearTileImage(loc);
           }
 
-          if( tempMark.equals("hairstrand") ){
+          else if( tempMark.equals("hairstrand") ){
             
             //add item to array
             items.add(tempMark);
@@ -335,9 +340,7 @@ void mouseClicked(){
   //Toggle the animation on & off
   doAnimation = !doAnimation;
   System.out.println("doAnimation: " + doAnimation);
-  if(currentGrid != null){
-    currentGrid.setMark("X",currentGrid.getGridLocation());
-  }
+
     
 } //close mouseClicked()
 
@@ -364,13 +367,13 @@ public void itemSetup1(){
   GridLocation tvloc = new GridLocation (15, 15);
   mainGrid.setTileImage(tvloc, tv);
 
-  GridLocation knightloc = new GridLocation(19, 9);
+  GridLocation knightloc = new GridLocation(14, 9);
   mainGrid.setTileImage(knightloc, knight);
 
   GridLocation fploc = new GridLocation(13, 5);
   mainGrid.setTileImage(fploc, fingerprint);
 
-  GridLocation hairstrandloc = new GridLocation(8, 17);
+  GridLocation hairstrandloc = new GridLocation(8, 14);
   mainGrid.setTileImage(hairstrandloc, hairstrand);
 
   //set marks
@@ -409,6 +412,17 @@ public void updateScreen(){
   //splashScreen update
   if(splashScreen.getScreenTime() > 3000 && splashScreen.getScreenTime() < 5000){
     currentScreen = mainGrid;
+  
+  //Inventory panel
+  } else {
+
+    String inventoryText = "";
+    //loop through inventory
+    for( String item : items){
+      inventoryText += item;
+    }
+    textBox("Inventory: " + inventoryText);
+
   }
 
   //mainGrid Screen Updates
@@ -583,6 +597,73 @@ public void playerAnimationSetup(){
 // }
 
 
+
+public void textBox(String message){
+  this.textBox(message, color(204,102,0), color(153));
+}
+
+public void textBox(String message, color boxClr, color textClr){
+  
+  float boxWidth = width;
+  float boxHeight = 100; 
+  float leftSide = 0;
+  float topSide = height-boxHeight;
+  int textHeight = 40;
+ 
+  fill(boxClr);
+  rect(leftSide, topSide, boxWidth, boxHeight, 10);
+  textSize(textHeight);
+  fill(153);
+  //fill(textClr);
+  text(message, 40, height - ((boxHeight-textHeight)/2)); 
+
+
+}
+
+/*
+private void showBox (final String sporocilo)
+{
+  final PFont fontek = loadFont("ArialTest.vlw");  
+     
+  //Izracunamo x in y pozicijo (okno se pojavi na sredini klicujocega okna) ter nastavimo visino in sirino okna
+  Rectangle r = frame.getBounds();
+  final int visina = 150;
+  final int sirina = 400;
+  final int x = r.x+r.width/2-sirina/2;
+  final int y = r.y+r.height/2-visina/2;
+  
+      
+  ControlP5 boxControl = new ControlP5(this);
+  boxControl.setAutoDraw(true);
+  ControlWindow boxWindow = boxControl.addControlWindow("boxWindow", x, y, sirina,visina);
+  boxWindow.setTitle("Sporocilo");
+  boxWindow.hideCoordinates();
+  boxWindow.setBackground(color(#6386c4));
+
+  
+    
+  Textlabel boxLabel = boxControl.addTextlabel("boxLabel", sporocilo, 10,10);
+
+  boxLabel.setWidth(350);
+  boxLabel.moveTo(boxWindow);
+  boxLabel.setPosition(10,30);
+   
+   
+  boxControl.setColorActive(#79FFB8);
+  boxControl.setColorForeground(#a8e6c6);
+
+  Button gumb = boxControl.addButton("OK_message",0,160,100,80,25);
+  gumb.captionLabel().set("OK");
+  gumb.captionLabel().style().marginLeft = 27;
+  gumb.moveTo(boxWindow);
+
+
+  boxControl.setControlFont(fontek);
+
+   
+   
+}
+*/
 
 
 
