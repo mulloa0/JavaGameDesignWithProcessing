@@ -258,12 +258,12 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
   GridLocation clickedLoc= currentGrid.getGridLocation();
   GridLocation player1Loc= new GridLocation(player1Row,player1Col);
 
-  //check if the lcoations are within 1
-  if(clickedLoc.equals(player1Loc)){
+  // //check if the lcoations are within 1
+  // if(clickedLoc.equals(player1Loc)){
 
-    //check if any nearby tiles hold any marks --> return the String
-    player1Col--;
-  }
+  //   //check if any nearby tiles hold any marks --> return the String
+  //   player1Col--;
+  // }
 
 
     //check if the click is near the player
@@ -388,6 +388,7 @@ public void itemSetup1(){
   //Display key
   GridLocation drawerloc = new GridLocation(5, 2);
   mainGrid.setTileImage(drawerloc, drawer);
+  mainGrid.setNewMark("drawer", drawerloc);
 
   GridLocation tvloc = new GridLocation (15, 15);
   mainGrid.setTileImage(tvloc, tv);
@@ -402,7 +403,6 @@ public void itemSetup1(){
   mainGrid.setTileImage(hairstrandloc, hairstrand);
 
   //set marks
-  System.out.println(currentGrid.setNewMark("drawer", drawerloc));
   System.out.println(currentGrid.setNewMark("hairclip", haircliploc));
   System.out.println(currentGrid.setNewMark("tv", tvloc));
   System.out.println(currentGrid.setNewMark("Knight", knightloc));
