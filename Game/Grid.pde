@@ -44,7 +44,7 @@ public class Grid extends World{
   // This mark is not necessarily visible, but can help in tracking
   // what you want recorded at each GridLocation.
   public void setMark(String mark, GridLocation loc){
-    board[loc.getRow()][loc.getCol()].setNewMark(mark);
+    board[loc.getRow()][loc.getCol()].setMark(mark);
     printGrid();
   } 
   

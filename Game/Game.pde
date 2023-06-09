@@ -35,7 +35,7 @@ AnimatedSprite p1;
 String p1File = "sprites/MC_AKey.png";
 String p1json = "sprites/MC_AKey.json";
 int player1Row = 3;
-int player1Col = 0;
+int player1Col = 2;
 int health = 3;
 
 AnimatedSprite enemySprite;
@@ -55,7 +55,7 @@ String hairclipFile = "images/hairclip-removebg-preview.png";
 PImage tv;
 String tvFile = "images/tv-removebg-preview.png";
 PImage knight;
-String knightfile = "images/Knight .png";
+String knightfile = "images/x_wood.png";
 PImage fingerprint;
 String fingerprintFile = "images/fingerprint.png";
 PImage hairstrand;
@@ -171,7 +171,7 @@ void keyPressed(){
   
 
   //set "w" key to move the player1 up
-  if(player1Row !=0 && keyCode == 87){
+  if(player1Row !=1 && keyCode == 87){
     
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
@@ -205,7 +205,7 @@ if(player1Row != currentGrid.getNumRows()-2 && keyCode == 83){
     //change the field for player1Col
     player1Col++;
   }
-  if(player1Col !=0 && keyCode == 65){
+  if(player1Col !=1 && keyCode == 65){
 
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
@@ -216,119 +216,135 @@ if(player1Row != currentGrid.getNumRows()-2 && keyCode == 83){
   }
 }
 
-  //Known Processing method that automatically will run when a mouse click triggers it
-  void mouseClicked(){
+//Known Processing method that automatically will run when a mouse click triggers it
+void mouseClicked(){
   
-    //check if click was successful
-    System.out.println("Mouse was clicked at (" + mouseX + "," + mouseY + ")");
-    if(currentGrid != null){
-      System.out.println("Grid location: " + currentGrid.getGridLocation());
-    }
-
-    //what to do if clicked?
-    GridLocation clickedLoc= currentGrid.getGridLocation();
-    GridLocation player1loc= new GridLocation(player1Row,player1Col);
-
-    //check if the lcoations are within 1
-    if(clickedLoc.equals(player1loc)){
-
-      //check if any nearby tiles hold any marks --> return the String
-      player1Col--;
-    }
-
-
-    //is an object nearby
-    //loop thru the 3x3 grid surrouding player
-  for(int r=0; r<currentGrid.getNumRows(); r++ ){
-    for(int c=0; c<currentGrid.getNumCols(); c++){
-
-      GridLocation loc = new GridLocation(r,c);
-       
-      //if item is found
-      if(currentGrid.hasMark(loc)){
-
-         String tempMark= currentGrid.getMark(loc);
-
-       
-       //if hairclip item
-      if( tempMark.equals("hairclip") ){
-        
-        //add item to array
-        items.add(tempMark);
-        
-        // image of item of disapeers
-        currentGrid.removeMark(loc);
-        currentGrid.clearTileImage(loc);
-      }
-
-       //if drawer item
-      if( tempMark.equals("drawer") ){
-        
-        //change to key
-        currentGrid.setMark("key", loc);
-
-        // change image to a key
-        currentGrid.setTileImage(loc,key);
-
-      }
-
-             
-       //if key item
-      if( tempMark.equals("key") ){
-        
-        //add item to array
-        items.add(tempMark);
-        
-        // image of item of disapeers
-        currentGrid.removeMark(loc);
-        currentGrid.clearTileImage(loc);
-      }
-
-        //if knight item
-      if( tempMark.equals("Knight") ){
-        
-        //add item to array
-        //items.add(tempMark);
-        
-        //image of item of disapeers
-        currentGrid.removeMark(loc);
-        currentGrid.clearTileImage(loc);
-        currentScreen.setBg(basementBg);
-      }
-
-      if( tempMark.equals("fingerprint") ){
-        
-        //add item to array
-        items.add(tempMark);
-        
-        // image of item of disapeers
-        currentGrid.removeMark(loc);
-        currentGrid.clearTileImage(loc);
-      }
-
-      if( tempMark.equals("hairstrand") ){
-        
-        //add item to array
-        items.add(tempMark);
-        
-        // image of item of disapeers
-        currentGrid.removeMark(loc);
-        currentGrid.clearTileImage(loc);
-      }
-
-      }
-    }
-    }
-  
-
-    //Toggle the animation on & off
-    doAnimation = !doAnimation;
-    System.out.println("doAnimation: " + doAnimation);
-    if(currentGrid != null){
-      currentGrid.setMark("X",currentGrid.getGridLocation());
-    }
-    
+  //check if click was successful
+  System.out.println("Mouse was clicked at (" + mouseX + "," + mouseY + ")");
+  if(currentGrid != null){
+    System.out.println("Grid location: " + currentGrid.getGridLocation());
   }
+
+  //what to do if clicked?
+  GridLocation clickedLoc= currentGrid.getGridLocation();
+  GridLocation player1Loc= new GridLocation(player1Row,player1Col);
+
+  //check if the lcoations are within 1
+  if(clickedLoc.equals(player1Loc)){
+
+    //check if any nearby tiles hold any marks --> return the String
+    player1Col--;
+  }
+
+
+    //check if the click is near the player
+    if(isClickNearPlayer(clickedLoc, player1Loc)){
+
+      //is an object nearby
+      //loop thru the 3x3 grid surrouding player
+      int leftCol = player1Col -1;
+      int rightCol = player1Col +1;
+      int topRow = player1Row -1;
+      int bottomRow = player1Row + 1;
+
+      for(int r=topRow; r<=bottomRow; r++ ){
+        for(int c=leftCol; c<=rightCol; c++){
+
+          GridLocation loc = new GridLocation(r,c);
+          
+          //if item is found
+          if(currentGrid.hasMark(loc)){
+
+            String tempMark= currentGrid.getMark(loc);
+
+          
+            //if hairclip item
+            if( tempMark.equals("hairclip") ){
+              
+              //add item to array
+              items.add(tempMark);
+              
+              // image of item of disapeers
+              currentGrid.removeMark(loc);
+              currentGrid.clearTileImage(loc);
+            }
+
+            //if drawer item
+            if( tempMark.equals("drawer") ){
+              
+              //change to key
+              currentGrid.setMark("key", loc);
+
+              // change image to a key
+              currentGrid.setTileImage(loc,key);
+
+            }
+
+                
+            //if key item
+            if( tempMark.equals("key") ){
+              
+              //add item to array
+              items.add(tempMark);
+              println("KEY ITEM HELD");
+            
+            // image of item of disapeers
+            currentGrid.removeMark(loc);
+            currentGrid.clearTileImage(loc);
+          }
+
+            //if knight item
+          if( tempMark.equals("Knight") ){
+            
+            //add item to array
+            //items.add(tempMark);
+            
+            //image of item of disapeers
+            currentGrid.removeMark(loc);
+            currentGrid.clearTileImage(loc);
+            currentScreen.setBg(basementBg);
+          }
+
+          if( tempMark.equals("fingerprint") ){
+            
+            //add item to array
+            items.add(tempMark);
+            
+            // image of item of disapeers
+            currentGrid.removeMark(loc);
+            currentGrid.clearTileImage(loc);
+          }
+
+          if( tempMark.equals("hairstrand") ){
+            
+            //add item to array
+            items.add(tempMark);
+            
+            // image of item of disapeers
+            currentGrid.removeMark(loc);
+            currentGrid.clearTileImage(loc);
+          }
+
+        }
+      } //close 2nd for loop
+
+    }
+  }
+  
+
+  //Toggle the animation on & off
+  doAnimation = !doAnimation;
+  System.out.println("doAnimation: " + doAnimation);
+  if(currentGrid != null){
+    currentGrid.setMark("X",currentGrid.getGridLocation());
+  }
+    
+} //close mouseClicked()
+
+public boolean isClickNearPlayer(GridLocation clickedLoc, GridLocation player1Loc){
+
+  return true;
+}
 
 
 
