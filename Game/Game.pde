@@ -60,7 +60,7 @@ String hairclipFile = "images/hairclip-removebg-preview.png";
 PImage tv;
 String tvFile = "images/tv-removebg-preview.png";
 PImage knight;
-String knightfile = "images/Knight .png";
+String knightfile = "images/knight.png";
 PImage fingerprint;
 String fingerprintFile = "images/fingerprint.png";
 PImage hairstrand;
