@@ -390,14 +390,14 @@ public void itemSetup1(){
   mainGrid.setTileImage(bedDoorloc, bedDoor);
 
   //set marks
-  System.out.println(currentGrid.setNewMark("drawer", drawerloc));
-  System.out.println(currentGrid.setNewMark("hairclip", haircliploc));
-  System.out.println(currentGrid.setNewMark("tv", tvloc));
-  System.out.println(currentGrid.setNewMark("Knight", knightloc));
-  System.out.println(currentGrid.setNewMark("fingerprint", fploc));
-  System.out.println(currentGrid.setNewMark("hairstrand", hairstrandloc));
-  System.out.println(currentGrid.setNewMark("basementDoor", basementDoorloc));
-  System.out.println(currentGrid.setNewMark("bedroomDoor", bedDoorloc));
+  System.out.println(mainGrid.setNewMark("drawer", drawerloc));
+  System.out.println(mainGrid.setNewMark("hairclip", haircliploc));
+  System.out.println(basementGrid.setNewMark("tv", tvloc));
+  System.out.println(mainGrid.setNewMark("Knight", knightloc));
+  System.out.println(basementGrid.setNewMark("fingerprint", fploc));
+  System.out.println(bedroomGrid.setNewMark("hairstrand", hairstrandloc));
+  System.out.println(mainGrid.setNewMark("basementDoor", basementDoorloc));
+  System.out.println(mainGrid.setNewMark("bedroomDoor", bedDoorloc));
 
   //marks.add(0,"key");
   
