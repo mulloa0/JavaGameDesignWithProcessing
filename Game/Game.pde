@@ -23,7 +23,7 @@ PImage splashBg;
 
 //Main Screen Variables
 Grid mainGrid;
-String mainBgFile = "images/mansion living room.png";
+String mainBgFile = "images/livingRoom.png";
 PImage mainBg;
 
 //Basement Screen Variables
@@ -39,8 +39,8 @@ PImage bedroomBg;
 AnimatedSprite p1;
 String p1File = "sprites/MC_AKey.png";
 String p1json = "sprites/MC_AKey.json";
-int player1Row = 3;
-int player1Col = 0;
+int player1Row = 6;
+int player1Col = 11;
 int health = 3;
 
 AnimatedSprite enemySprite;
@@ -65,6 +65,10 @@ PImage fingerprint;
 String fingerprintFile = "images/fingerprint.png";
 PImage hairstrand;
 String hairstrandFile = "images/Hair.png";
+PImage basementDoor;
+String basementDoorFile = "images/BasementDoor.png";
+PImage bedDoor;
+String bedDoorFile = "images/BedDoor.png";
 
 //EndScreen variables
 World endScreen;
@@ -96,6 +100,8 @@ void setup() {
   mainBg.resize(width, height);
   basementBg = loadImage(basementBgFile);
   basementBg.resize(width,height);
+  bedroomBg = loadImage(bedroomBgFile);
+  bedroomBg.resize(width, height);
   endBg = loadImage(endBgFile);
   endBg.resize(width, height);
 
@@ -121,11 +127,17 @@ void setup() {
   tv = loadImage(tvFile);
   tv.resize(120,90);
   knight = loadImage(knightfile);
-  knight.resize(120,90);
+  knight.resize(80,90);
   fingerprint = loadImage(fingerprintFile);
   fingerprint.resize(40,30);
   hairstrand = loadImage(hairstrandFile);
   hairstrand.resize(120,90);
+
+  //setup Doors
+  basementDoor = loadImage(basementDoorFile);
+  basementDoor.resize(80,120);
+  bedDoor = loadImage(bedDoorFile);
+  bedDoor.resize(80,120);
 
   //set up the items into the first Grid
   itemSetup1();
@@ -242,11 +254,15 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
       player1Col--;
     }
 
+     //is an object nearby
+      //loop thru the 3x3 grid surrouding player
+      int leftCol = player1Col -1;
+      int rightCol = player1Col +1;
+      int topRow = player1Row -1;
+      int bottomRow = player1Row + 1;
 
-    //is an object nearby
-    //loop thru the 3x3 grid surrouding player
-  for(int r=0; r<currentGrid.getNumRows(); r++ ){
-    for(int c=0; c<currentGrid.getNumCols(); c++){
+      for(int r=topRow; r<=bottomRow; r++ ){
+        for(int c=leftCol; c<=rightCol; c++){
 
       GridLocation loc = new GridLocation(r,c);
        
@@ -257,7 +273,7 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
 
        
        //if hairclip item
-      else if( tempMark.equals("hairclip") ){
+      if( tempMark.equals("hairclip") ){
         
         //add item to array
         items.add(tempMark);
@@ -322,6 +338,14 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
         currentGrid.clearTileImage(loc);
       }
 
+      else if (tempMark.equals("basementDoor")){
+        currentScreen = basementGrid;
+      }
+      
+      else if (tempMark.equals("bedroomDoor")){
+        currentScreen = bedroomGrid;
+      }
+
       }
     }
     }
@@ -330,9 +354,6 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
     //Toggle the animation on & off
     doAnimation = !doAnimation;
     System.out.println("doAnimation: " + doAnimation);
-    if(currentGrid != null){
-      currentGrid.setMark("X",currentGrid.getGridLocation());
-    }
     
   }
 
@@ -348,20 +369,26 @@ public void itemSetup1(){
   mainGrid.setTileImage(haircliploc, hairclip);
 
   //Display key
-  GridLocation drawerloc = new GridLocation(5, 2);
+  GridLocation drawerloc = new GridLocation(7, 2);
   mainGrid.setTileImage(drawerloc, drawer);
 
-  GridLocation tvloc = new GridLocation (15, 15);
-  mainGrid.setTileImage(tvloc, tv);
+  GridLocation tvloc = new GridLocation (8, 12);
+  basementGrid.setTileImage(tvloc, tv);
 
-  GridLocation knightloc = new GridLocation(14, 9);
+  GridLocation knightloc = new GridLocation(8, 8);
   mainGrid.setTileImage(knightloc, knight);
 
-  GridLocation fploc = new GridLocation(13, 5);
-  mainGrid.setTileImage(fploc, fingerprint);
+  GridLocation fploc = new GridLocation(2, 5);
+  basementGrid.setTileImage(fploc, fingerprint);
 
   GridLocation hairstrandloc = new GridLocation(8, 14);
-  mainGrid.setTileImage(hairstrandloc, hairstrand);
+  bedroomGrid.setTileImage(hairstrandloc, hairstrand);
+
+  GridLocation basementDoorloc = new GridLocation(4, 4);
+  mainGrid.setTileImage(basementDoorloc, basementDoor);
+
+  GridLocation bedDoorloc = new GridLocation(4, 9);
+  mainGrid.setTileImage(bedDoorloc, bedDoor);
 
   //set marks
   System.out.println(currentGrid.setNewMark("drawer", drawerloc));
@@ -370,7 +397,8 @@ public void itemSetup1(){
   System.out.println(currentGrid.setNewMark("Knight", knightloc));
   System.out.println(currentGrid.setNewMark("fingerprint", fploc));
   System.out.println(currentGrid.setNewMark("hairstrand", hairstrandloc));
-
+  System.out.println(currentGrid.setNewMark("basementDoor", basementDoorloc));
+  System.out.println(currentGrid.setNewMark("bedroomDoor", bedDoorloc));
 
   //marks.add(0,"key");
   
@@ -400,6 +428,7 @@ public void updateScreen(){
   if(splashScreen.getScreenTime() > 3000 && splashScreen.getScreenTime() < 5000){
     currentScreen = mainGrid;
   }
+  //Inventory Panel
     else {
 
     String inventoryText = "";
