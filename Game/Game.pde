@@ -31,11 +31,16 @@ Grid basementGrid;
 String basementBgFile = "images/basement.PNG";
 PImage basementBg;
 
+//Bedroom Screen Variables
+Grid bedroomGrid;
+String bedroomBgFile = "images/bedroom.png";
+PImage bedroomBg;
+
 AnimatedSprite p1;
 String p1File = "sprites/MC_AKey.png";
 String p1json = "sprites/MC_AKey.json";
 int player1Row = 3;
-int player1Col = 2;
+int player1Col = 0;
 int health = 3;
 
 AnimatedSprite enemySprite;
@@ -55,7 +60,7 @@ String hairclipFile = "images/hairclip-removebg-preview.png";
 PImage tv;
 String tvFile = "images/tv-removebg-preview.png";
 PImage knight;
-String knightfile = "images/x_wood.png";
+String knightfile = "images/Knight .png";
 PImage fingerprint;
 String fingerprintFile = "images/fingerprint.png";
 PImage hairstrand;
@@ -76,7 +81,7 @@ String endBgFile = "images/youwin.png";
 void setup() {
 
   //Match the screen size to the background image size
-  size(800, 900);
+  size(800, 600);
 
   //Set the title on the title bar
   surface.setTitle(titleText);
@@ -86,18 +91,19 @@ void setup() {
   
   //Load BG images used
   splashBg = loadImage(splashBgFile);
-  splashBg.resize(width, height);
+  splashBg.resize(800, 600);
   mainBg = loadImage(mainBgFile);
-  mainBg.resize(width, height);
+  mainBg.resize(800, 600);
   basementBg = loadImage(basementBgFile);
-  basementBg.resize(width, height);
+  basementBg.resize(800,600);
   endBg = loadImage(endBgFile);
-  endBg.resize(width, height);
+  endBg.resize(800, 600);
 
   //setup the screens/worlds/grids in the Game
   splashScreen = new Screen("splash", splashBg);
-  mainGrid = new Grid("living room", mainBg, 18,16);
-  basementGrid = new Grid("basement", basementBg, 18,16);
+  mainGrid = new Grid("living room", mainBg, 20,20);
+  basementGrid = new Grid("basement", basementBg, 20, 20);
+  bedroomGrid = new Grid("bedroom", bedroomBg, 20, 20);
   endScreen = new World("end", endBg);
   currentScreen = splashScreen;
   currentGrid = mainGrid;
@@ -141,9 +147,6 @@ void setup() {
 //(Anything drawn on the screen should be called from here)
 void draw() { 
 
-
-  
-
   updateTitleBar();
 
   // if (msElapsed % 300 == 0) {
@@ -162,7 +165,6 @@ void draw() {
   msElapsed +=100;
   currentGrid.pause(100);
 
-
 }
 
 //Known Processing method that automatically will run whenever a key is pressed
@@ -175,7 +177,7 @@ void keyPressed(){
   
 
   //set "w" key to move the player1 up
-  if(player1Row !=1 && keyCode == 87){
+  if(player1Row !=0 && keyCode == 87){
     
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
@@ -189,7 +191,7 @@ void keyPressed(){
 
 
   }
-if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
+if(player1Row != currentGrid.getNumRows()-2 && keyCode == 83){
     //check case where out of bounds (key s)
     
     //Erase image from previous location
@@ -200,7 +202,7 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
     player1Row++;
 
   }
- if(player1Col != currentGrid.getNumCols()-1 && keyCode == 68){
+ if(player1Col != currentGrid.getNumCols()-2 && keyCode == 68){
 
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
@@ -209,7 +211,7 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
     //change the field for player1Col
     player1Col++;
   }
-  if(player1Col !=1 && keyCode == 65){
+  if(player1Col !=0 && keyCode == 65){
 
     //Erase image from previous location
     GridLocation oldLoc = new GridLocation(player1Row, player1Col);
@@ -220,134 +222,119 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
   }
 }
 
-//Known Processing method that automatically will run when a mouse click triggers it
-void mouseClicked(){
+  //Known Processing method that automatically will run when a mouse click triggers it
+  void mouseClicked(){
   
-  //check if click was successful
-  System.out.println("Mouse was clicked at (" + mouseX + "," + mouseY + ")");
-  if(currentGrid != null){
-    System.out.println("Grid location: " + currentGrid.getGridLocation());
-  }
-
-  //what to do if clicked?
-  GridLocation clickedLoc= currentGrid.getGridLocation();
-  GridLocation player1Loc= new GridLocation(player1Row,player1Col);
-
-  // //check if the lcoations are within 1
-  // if(clickedLoc.equals(player1Loc)){
-
-  //   //check if any nearby tiles hold any marks --> return the String
-  //   player1Col--;
-  // }
-
-
-    //check if the click is near the player
-    if(isClickNearPlayer(clickedLoc, player1Loc)){
-
-      //is an object nearby
-      //loop thru the 3x3 grid surrouding player
-      int leftCol = player1Col -1;
-      int rightCol = player1Col +1;
-      int topRow = player1Row -1;
-      int bottomRow = player1Row + 1;
-
-      for(int r=topRow; r<=bottomRow; r++ ){
-        for(int c=leftCol; c<=rightCol; c++){
-
-          GridLocation loc = new GridLocation(r,c);
-          
-          //if item is found
-          if(currentGrid.hasMark(loc)){
-
-            String tempMark= currentGrid.getMark(loc);
-
-          
-            //if hairclip item
-            if( tempMark.equals("hairclip") ){
-              
-              //add item to array
-              items.add(tempMark);
-              
-              // image of item of disapeers
-              currentGrid.removeMark(loc);
-              currentGrid.clearTileImage(loc);
-            }
-
-            //if drawer item
-            else if( tempMark.equals("drawer") ){
-              
-              //change to key
-              currentGrid.setMark("key", loc);
-              //System.out.println("SetMark called with: " + loc);
-
-              // change image to a key
-              currentGrid.setTileImage(loc,key);
-
-            }
-
-                
-            //if key item
-            else if( tempMark.equals("key") ){
-              
-              //add item to array
-              items.add(tempMark);
-              println("KEY ITEM HELD");
-            
-              // image of item of disapeers
-              currentGrid.removeMark(loc);
-              currentGrid.clearTileImage(loc);
-            }
-
-            //if knight item
-          else if( tempMark.equals("Knight") ){
-            
-            //add item to array
-            //items.add(tempMark);
-            
-            //image of item of disapeers
-            currentGrid.removeMark(loc);
-            currentGrid.clearTileImage(loc);
-            currentScreen.setBg(basementBg);
-          }
-
-          else if( tempMark.equals("fingerprint") ){
-            
-            //add item to array
-            items.add(tempMark);
-            
-            // image of item of disapeers
-            currentGrid.removeMark(loc);
-            currentGrid.clearTileImage(loc);
-          }
-
-          else if( tempMark.equals("hairstrand") ){
-            
-            //add item to array
-            items.add(tempMark);
-            
-            // image of item of disapeers
-            currentGrid.removeMark(loc);
-            currentGrid.clearTileImage(loc);
-          }
-
-        }
-      } //close 2nd for loop
-
+    //check if click was successful
+    System.out.println("Mouse was clicked at (" + mouseX + "," + mouseY + ")");
+    if(currentGrid != null){
+      System.out.println("Grid location: " + currentGrid.getGridLocation());
     }
-  }
+
+    //what to do if clicked?
+    GridLocation clickedLoc= currentGrid.getGridLocation();
+    GridLocation player1loc= new GridLocation(player1Row,player1Col);
+
+    //check if the lcoations are within 1
+    if(clickedLoc.equals(player1loc)){
+
+      //check if any nearby tiles hold any marks --> return the String
+      player1Col--;
+    }
+
+
+    //is an object nearby
+    //loop thru the 3x3 grid surrouding player
+  for(int r=0; r<currentGrid.getNumRows(); r++ ){
+    for(int c=0; c<currentGrid.getNumCols(); c++){
+
+      GridLocation loc = new GridLocation(r,c);
+       
+      //if item is found
+      if(currentGrid.hasMark(loc)){
+
+         String tempMark= currentGrid.getMark(loc);
+
+       
+       //if hairclip item
+      if( tempMark.equals("hairclip") ){
+        
+        //add item to array
+        items.add(tempMark);
+        
+        // image of item of disapeers
+        currentGrid.removeMark(loc);
+        currentGrid.clearTileImage(loc);
+      }
+
+       //if drawer item
+      if( tempMark.equals("drawer") ){
+        
+        //change to key
+        currentGrid.setMark("key", loc);
+
+        // change image to a key
+        currentGrid.setTileImage(loc,key);
+
+      }
+
+             
+       //if key item
+      if( tempMark.equals("key") ){
+        
+        //add item to array
+        items.add(tempMark);
+        
+        // image of item of disapeers
+        currentGrid.removeMark(loc);
+        currentGrid.clearTileImage(loc);
+      }
+
+        //if knight item
+      if( tempMark.equals("Knight") ){
+        
+        //add item to array
+        //items.add(tempMark);
+        
+        //image of item of disapeers
+        currentGrid.removeMark(loc);
+        currentGrid.clearTileImage(loc);
+        currentScreen = basementGrid;
+      }
+
+      if( tempMark.equals("fingerprint") ){
+        
+        //add item to array
+        items.add(tempMark);
+        
+        // image of item of disapeers
+        currentGrid.removeMark(loc);
+        currentGrid.clearTileImage(loc);
+      }
+
+      if( tempMark.equals("hairstrand") ){
+        
+        //add item to array
+        items.add(tempMark);
+        
+        // image of item of disapeers
+        currentGrid.removeMark(loc);
+        currentGrid.clearTileImage(loc);
+      }
+
+      }
+    }
+    }
   
 
-  //Toggle the animation on & off
-  doAnimation = !doAnimation;
-  System.out.println("doAnimation: " + doAnimation);
-
+    //Toggle the animation on & off
+    doAnimation = !doAnimation;
+    System.out.println("doAnimation: " + doAnimation);
+    if(currentGrid != null){
+      currentGrid.setMark("X",currentGrid.getGridLocation());
+    }
     
-} //close mouseClicked()
-
-public boolean isClickNearPlayer(GridLocation clickedLoc, GridLocation player1Loc){
-
-  return true;
-}
+  }
 
 
 
@@ -363,21 +350,21 @@ public void itemSetup1(){
   //Display key
   GridLocation drawerloc = new GridLocation(5, 2);
   mainGrid.setTileImage(drawerloc, drawer);
-  mainGrid.setNewMark("drawer", drawerloc);
 
   GridLocation tvloc = new GridLocation (15, 15);
   mainGrid.setTileImage(tvloc, tv);
 
-  GridLocation knightloc = new GridLocation(14, 9);
+  GridLocation knightloc = new GridLocation(19, 9);
   mainGrid.setTileImage(knightloc, knight);
 
   GridLocation fploc = new GridLocation(13, 5);
   mainGrid.setTileImage(fploc, fingerprint);
 
-  GridLocation hairstrandloc = new GridLocation(8, 14);
+  GridLocation hairstrandloc = new GridLocation(8, 17);
   mainGrid.setTileImage(hairstrandloc, hairstrand);
 
   //set marks
+  System.out.println(currentGrid.setNewMark("drawer", drawerloc));
   System.out.println(currentGrid.setNewMark("hairclip", haircliploc));
   System.out.println(currentGrid.setNewMark("tv", tvloc));
   System.out.println(currentGrid.setNewMark("Knight", knightloc));
@@ -412,22 +399,45 @@ public void updateScreen(){
   //splashScreen update
   if(splashScreen.getScreenTime() > 3000 && splashScreen.getScreenTime() < 5000){
     currentScreen = mainGrid;
-  
-  //Inventory panel
-  } else {
-
-    String inventoryText = "";
-    //loop through inventory
-    for( String item : items){
-      inventoryText += item;
-    }
-    textBox("Inventory: " + inventoryText);
-
   }
 
   //mainGrid Screen Updates
   if(currentScreen == mainGrid){
     currentGrid = mainGrid;
+
+    //Display the Player1 image
+    // GridLocation player1Loc = new GridLocation(player1Row,player1Col);
+    // currentGrid.setTileImage(player1Loc, player1);
+
+    GridLocation p1Loc= new GridLocation(player1Row,player1Col);
+    currentGrid.setTileSprite(p1Loc, p1);
+
+    //Update other screen elements
+    currentGrid.showImages();
+    currentGrid.showSprites();
+    currentGrid.showGridSprites();
+  }
+
+   //basementGrid Screen Updates
+  if(currentScreen == basementGrid){
+    currentGrid = basementGrid;
+
+    //Display the Player1 image
+    // GridLocation player1Loc = new GridLocation(player1Row,player1Col);
+    // currentGrid.setTileImage(player1Loc, player1);
+
+    GridLocation p1Loc= new GridLocation(player1Row,player1Col);
+    currentGrid.setTileSprite(p1Loc, p1);
+
+    //Update other screen elements
+    currentGrid.showImages();
+    currentGrid.showSprites();
+    currentGrid.showGridSprites();
+  }
+
+   //mainGrid Screen Updates
+  if(currentScreen == bedroomGrid){
+    currentGrid = bedroomGrid;
 
     //Display the Player1 image
     // GridLocation player1Loc = new GridLocation(player1Row,player1Col);
@@ -597,73 +607,6 @@ public void playerAnimationSetup(){
 // }
 
 
-
-public void textBox(String message){
-  this.textBox(message, color(204,102,0), color(153));
-}
-
-public void textBox(String message, color boxClr, color textClr){
-  
-  float boxWidth = width;
-  float boxHeight = 100; 
-  float leftSide = 0;
-  float topSide = height-boxHeight;
-  int textHeight = 40;
- 
-  fill(boxClr);
-  rect(leftSide, topSide, boxWidth, boxHeight, 10);
-  textSize(textHeight);
-  fill(153);
-  //fill(textClr);
-  text(message, 40, height - ((boxHeight-textHeight)/2)); 
-
-
-}
-
-/*
-private void showBox (final String sporocilo)
-{
-  final PFont fontek = loadFont("ArialTest.vlw");  
-     
-  //Izracunamo x in y pozicijo (okno se pojavi na sredini klicujocega okna) ter nastavimo visino in sirino okna
-  Rectangle r = frame.getBounds();
-  final int visina = 150;
-  final int sirina = 400;
-  final int x = r.x+r.width/2-sirina/2;
-  final int y = r.y+r.height/2-visina/2;
-  
-      
-  ControlP5 boxControl = new ControlP5(this);
-  boxControl.setAutoDraw(true);
-  ControlWindow boxWindow = boxControl.addControlWindow("boxWindow", x, y, sirina,visina);
-  boxWindow.setTitle("Sporocilo");
-  boxWindow.hideCoordinates();
-  boxWindow.setBackground(color(#6386c4));
-
-  
-    
-  Textlabel boxLabel = boxControl.addTextlabel("boxLabel", sporocilo, 10,10);
-
-  boxLabel.setWidth(350);
-  boxLabel.moveTo(boxWindow);
-  boxLabel.setPosition(10,30);
-   
-   
-  boxControl.setColorActive(#79FFB8);
-  boxControl.setColorForeground(#a8e6c6);
-
-  Button gumb = boxControl.addButton("OK_message",0,160,100,80,25);
-  gumb.captionLabel().set("OK");
-  gumb.captionLabel().style().marginLeft = 27;
-  gumb.moveTo(boxWindow);
-
-
-  boxControl.setControlFont(fontek);
-
-   
-   
-}
-*/
 
 
 
