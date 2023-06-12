@@ -346,10 +346,14 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
         currentScreen = bedroomGrid;
       }
 
+      else if(tempMark.equals("tv")){
+        if(items.size()==5){
+          endGame();
+        }
       }
     }
     }
-  
+  }
 
     //Toggle the animation on & off
     doAnimation = !doAnimation;
