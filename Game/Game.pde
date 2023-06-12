@@ -336,6 +336,7 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
         // image of item of disapeers
         currentGrid.removeMark(loc);
         currentGrid.clearTileImage(loc);
+        currentScreen = mainGrid;
       }
 
       else if (tempMark.equals("basementDoor")){
