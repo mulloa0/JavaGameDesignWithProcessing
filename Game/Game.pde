@@ -131,7 +131,7 @@ void setup() {
   fingerprint = loadImage(fingerprintFile);
   fingerprint.resize(40,30);
   hairstrand = loadImage(hairstrandFile);
-  hairstrand.resize(120,90);
+  hairstrand.resize(80,60);
 
   //setup Doors
   basementDoor = loadImage(basementDoorFile);
@@ -346,12 +346,7 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
         currentScreen = bedroomGrid;
       }
 
-      else if(tempMark.equals("tv")){
-        if(items.size()==5){
-          endGame();
-        }
       }
-    }
     }
   }
 
@@ -385,7 +380,7 @@ public void itemSetup1(){
   GridLocation fploc = new GridLocation(2, 5);
   basementGrid.setTileImage(fploc, fingerprint);
 
-  GridLocation hairstrandloc = new GridLocation(8, 14);
+  GridLocation hairstrandloc = new GridLocation(8, 7);
   bedroomGrid.setTileImage(hairstrandloc, hairstrand);
 
   GridLocation basementDoorloc = new GridLocation(4, 4);
