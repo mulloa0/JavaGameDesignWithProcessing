@@ -471,15 +471,13 @@ public void updateScreen(){
     currentScreen = mainGrid;
   }
   //Inventory Panel
-    else {
-
+  else {
     String inventoryText = "";
     //loop through inventory
     for( String item : items){
       inventoryText += item;
     }
     textBox("Inventory: " + inventoryText);
-    
   }
 
   //mainGrid Screen Updates
@@ -490,8 +488,9 @@ public void updateScreen(){
     // GridLocation player1Loc = new GridLocation(player1Row,player1Col);
     // currentGrid.setTileImage(player1Loc, player1);
 
-    GridLocation p1Loc= new GridLocation(player1Row,player1Col);
+    GridLocation p1Loc = new GridLocation(player1Row, player1Col);
     currentGrid.setTileSprite(p1Loc, p1);
+    
 
     //Update other screen elements
     currentGrid.showImages();
@@ -507,7 +506,7 @@ public void updateScreen(){
     // GridLocation player1Loc = new GridLocation(player1Row,player1Col);
     // currentGrid.setTileImage(player1Loc, player1);
 
-    GridLocation p1Loc= new GridLocation(player1Row,player1Col);
+    GridLocation p1Loc= new GridLocation(player1Row, player1Col);
     currentGrid.setTileSprite(p1Loc, p1);
 
     //Update other screen elements
@@ -524,7 +523,7 @@ public void updateScreen(){
     // GridLocation player1Loc = new GridLocation(player1Row,player1Col);
     // currentGrid.setTileImage(player1Loc, player1);
 
-    GridLocation p1Loc= new GridLocation(player1Row,player1Col);
+    GridLocation p1Loc= new GridLocation(player1Row, player1Col);
     currentGrid.setTileSprite(p1Loc, p1);
 
     //Update other screen elements
