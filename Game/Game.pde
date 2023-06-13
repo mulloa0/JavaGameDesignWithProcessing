@@ -71,6 +71,8 @@ PImage basementDoor;
 String basementDoorFile = "images/BasementDoor.png";
 PImage bedDoor;
 String bedDoorFile = "images/BedDoor.png";
+PImage footprints;
+String footprintFile = "images/Footprints.png";
 
 //EndScreen variables
 World endScreen;
@@ -134,6 +136,8 @@ void setup() {
   fingerprint.resize(40,30);
   hairstrand = loadImage(hairstrandFile);
   hairstrand.resize(80,60);
+  footprints = loadImage(footprintFile);
+  footprints.resize(80,60);
 
   //setup Doors
   basementDoor = loadImage(basementDoorFile);
@@ -283,6 +287,11 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
         // image of item of disapeers
         currentGrid.removeMark(loc);
         currentGrid.clearTileImage(loc);
+        for(int i = 0; i<items.size(); i++){
+          if(items.get(i).equals("hairstrand")){
+            currentScreen = mainGrid;
+          }
+        }
       }
 
        //if drawer item
@@ -330,6 +339,16 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
         currentGrid.clearTileImage(loc);
       }
 
+      else if( tempMark.equals("footprint")){
+
+        //add item to array
+        items.add(tempMark);
+        
+        // image of item of disapeers
+        currentGrid.removeMark(loc);
+        currentGrid.clearTileImage(loc);
+      }
+
       else if( tempMark.equals("hairstrand") ){
         
         //add item to array
@@ -338,7 +357,11 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
         // image of item of disapeers
         currentGrid.removeMark(loc);
         currentGrid.clearTileImage(loc);
-        currentScreen = mainGrid;
+        for(int i = 0; i<items.size(); i++){
+          if(items.get(i).equals("hairclip")){
+            currentScreen = mainGrid;
+          }
+        }
       }
 
       else if (tempMark.equals("basementDoor")){
@@ -347,6 +370,19 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
       
       else if (tempMark.equals("bedroomDoor")){
         currentScreen = bedroomGrid;
+      }
+
+      else if(tempMark.equals("tv")){
+        if(items.size() == 5){
+          endGame();
+        }
+        else{
+          for(int i = 0; i < items.size(); i++){
+            if (!(items.get(i).equals("hairstrand") && items.get(i).equals("hairclip"))){
+              currentScreen = mainGrid;
+            }
+          }
+        }
       }
 
       }
@@ -368,7 +404,7 @@ if(player1Row != currentGrid.getNumRows()-3 && keyCode == 83){
 public void itemSetup1(){
 
   GridLocation haircliploc = new GridLocation(10, 2);
-  mainGrid.setTileImage(haircliploc, hairclip);
+  bedroomGrid.setTileImage(haircliploc, hairclip);
 
   //Display key
   GridLocation drawerloc = new GridLocation(7, 2);
@@ -392,15 +428,19 @@ public void itemSetup1(){
   GridLocation bedDoorloc = new GridLocation(4, 9);
   mainGrid.setTileImage(bedDoorloc, bedDoor);
 
+  GridLocation footprintsloc = new GridLocation(8, 6);
+  basementGrid.setTileImage(footprintsloc, footprints);
+
   //set marks
   System.out.println(mainGrid.setNewMark("drawer", drawerloc));
-  System.out.println(mainGrid.setNewMark("hairclip", haircliploc));
+  System.out.println(bedroomGrid.setNewMark("hairclip", haircliploc));
   System.out.println(basementGrid.setNewMark("tv", tvloc));
   System.out.println(mainGrid.setNewMark("Knight", knightloc));
   System.out.println(basementGrid.setNewMark("fingerprint", fploc));
   System.out.println(bedroomGrid.setNewMark("hairstrand", hairstrandloc));
   System.out.println(mainGrid.setNewMark("basementDoor", basementDoorloc));
   System.out.println(mainGrid.setNewMark("bedroomDoor", bedDoorloc));
+  System.out.println(basementGrid.setNewMark("footprint", footprintsloc));
 
   //marks.add(0,"key");
   
