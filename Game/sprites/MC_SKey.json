@@ -1,30 +1,32 @@
 {
-  "frames": {
-    "10.png": {
+  "frames": [
+    {
+      "filename": "0.png",
       "frame": {
         "x": 0,
         "y": 0,
-        "w": 61,
+        "w": 60,
         "h": 169
       },
       "rotated": false,
-      "trimmed": true,
+      "trimmed": false,
       "spriteSourceSize": {
-        "x": 17,
-        "y": 22,
-        "w": 61,
+        "x": 0,
+        "y": 0,
+        "w": 60,
         "h": 169
       },
       "sourceSize": {
-        "w": 100,
-        "h": 200
+        "w": 60,
+        "h": 169
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "09.png": {
+    {
+      "filename": "1.png",
       "frame": {
         "x": 0,
         "y": 169,
@@ -34,21 +36,22 @@
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 19,
-        "y": 22,
+        "x": 0,
+        "y": 0,
         "w": 51,
         "h": 169
       },
       "sourceSize": {
-        "w": 100,
-        "h": 200
+        "w": 60,
+        "h": 169
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "11.png": {
+    {
+      "filename": "2.png",
       "frame": {
         "x": 0,
         "y": 338,
@@ -58,28 +61,28 @@
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 25,
-        "y": 22,
+        "x": 0,
+        "y": 0,
         "w": 51,
         "h": 169
       },
       "sourceSize": {
-        "w": 100,
-        "h": 200
+        "w": 60,
+        "h": 169
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     }
-  },
+  ],
   "meta": {
     "app": "http://free-tex-packer.com",
     "version": "0.6.7",
-    "image": "MC_SKey.png",
+    "image": "texture.png",
     "format": "RGBA8888",
     "size": {
-      "w": 61,
+      "w": 60,
       "h": 507
     },
     "scale": 1
