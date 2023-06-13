@@ -1,11 +1,13 @@
 /* Game Class Starter File
  * Last Edit: 5/22/23
  * Authors: _____________________
+ 
  */
 
 //import processing.sound.*;
 
 //GAME VARIABLES
+
 private int timesGet = 0;
 private int msElapsed = 0;
 String titleText = "Murder Mystery";
